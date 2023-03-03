@@ -49,7 +49,7 @@ int main()
 
         }
     }while(!ok);
-    printf("\n a=%d \n b=%d \n n=%d", a, b, n);
+    printf("\n a = %d \n b = %d \n n = %d", a, b, n);
 
     return 0;
 }

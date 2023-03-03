@@ -52,29 +52,20 @@ int main()
         }
     }while(!ok);
     
-    int tomb[n];
+    double tomb[n];
     srand(time(NULL));
     int i;
     ok=0;
+    double tav =(b-a);
+    double div = RAND_MAX /tav;
     for(i=0; i<n; i++)
     { 
-        do{
-            tomb[i]=rand();
-            if(tomb[i]<a && tomb[i]>b)
-            {
-               printf("Hibas adat");
-                ok=0; 
-            }
-            else
-            {
-                ok=1;
-            }
-        }while(!ok);
+        tomb[i] = (rand() / div) + a;
     }
     i=0;
     for(i=0; i<n; i++)
     {
-        printf("%d, ", tomb[i]);
+        printf("%lf, ", tomb[i]);
     }
 
     return 0;
