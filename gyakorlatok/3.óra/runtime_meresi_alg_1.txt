@@ -1,0 +1,1 @@
+Tömb mérete; Összegszámítás; Rekurzív összegszámítás; Minimum számítás; Rekurzív minimumszámítás; Maximum számítás; Rekurzív maximum számítás;
