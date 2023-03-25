@@ -69,13 +69,13 @@ void Upload( int* array, int n)
     int ok=0;
     for(i=0; i<n; i++)
     { 
-        tomb[i] = rand();
+        array[i] = rand();
     }
     return;
 }
 
 int Odd( int *array, int n)
-[
+{
     int odd=0;
     int i;
     for(i=0; i<n; i++)
@@ -86,7 +86,7 @@ int Odd( int *array, int n)
         }
     }
     return odd;
-]    //páratlan
+}    //páratlan
 int Even(int *array, int n)
 {
     int even=0;
