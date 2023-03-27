@@ -14,9 +14,12 @@ int main()
     int array[n];
     pthread_t threads[N_THREADS];
     int i;
+    int begin=0,end=99;
     for(i=0;i<N_THREADS;i++)
     {
         pthread_create(&threads[i],NULL,Prime_number,int begin, int end);
+        begin+=100;
+        end+=100;
     }
     for(i=0;i<N_THREADS;i++)
     {
