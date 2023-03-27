@@ -1,7 +1,9 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 
 void Upload(int *array, int n);
 int Odd( int *array, int n);    //páratlan
@@ -11,7 +13,6 @@ int Negative(int *array, int n);
 int Intervall(int *array, int n, int from, int until);
 void runtime_display(clock_t sequential_time, clock_t pthread_time, int size);
 
-int pthread_create(pthread_t* thread, const pthread_attr_t* attr, void *(*start_routine)(void *),void *arg)
 
 int main()
 {
@@ -46,12 +47,12 @@ int main()
 
     clock_t pthread_time1;
     pthread_time1=clock();
-    pthread_create(1,NULL,Upload,array,n);
-    pthread_create(2,NULL,Even,array,n);
-    pthread_create(3,NULL,Odd,array,n);
-    pthread_create(4,NULL,Null,array,n);
-    pthread_create(5,NULL,Negative,array,n);
-    pthread_create(6,NULL,Intervall,array,n,from,until);
+    pthread_create(array,NULL,Upload,array,n);
+    pthread_create(even,NULL,Even,array,n);
+    pthread_create(odd,NULL,Odd,array,n);
+    pthread_create(null,NULL,Null,array,n);
+    pthread_create(negative,NULL,Negative,array,n);
+    pthread_create(intervall,NULL,Intervall,array,n,from,until);
     clock_t pthread_time2;
     pthread_time2=clock();
     clock_t pthread_time;
