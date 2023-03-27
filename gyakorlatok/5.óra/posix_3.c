@@ -20,7 +20,12 @@ int main()
     }
     for(i=0;i<N_THREADS;i++)
     {
-        pthread_join(thread[i],NULL);
+        pthread_join(threads[i],NULL);
+    }
+    int i;
+    for(i=0;i<n;i++)
+    {
+        array[i]=threads[i];
     }
     return 0;
 }
