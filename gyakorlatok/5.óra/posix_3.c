@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <pthread.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 const int N_THREADS = 10;
 
@@ -25,7 +28,6 @@ int main()
     {
         pthread_join(threads[i],NULL);
     }
-    int i;
     for(i=0;i<n;i++)
     {
         array[i]=threads[i];
@@ -35,7 +37,7 @@ int main()
 
 int Prime_number(int begin, int end)
 {
-    int i;
+    int i,j;
     int prime=0;
     int counter=0;
     for(i=begin;i<end;i++) 
