@@ -12,10 +12,7 @@ const int N_THREADS = 10;
 void Upload( int* array, int n);
 int Multiply(int* array, int size);
 int Rekmultiply(int* array,int begin, int over);
-void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, int size); 
-
-//OpenMP párhuzamos for ciklus használatával.
-//OpenMP redukciós operátor használatával.
+void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, clock_t omprektime int size); 
 
 int main()
 {
@@ -27,6 +24,8 @@ int main()
         int multiply;
         int rekmultiply;
         int multiplyomp;
+        int ompthread;
+        int omprek;
         pthread_t threads[N_THREADS];
         pthread_t threadsomp[N_THREADS];
         Upload(array, n);
@@ -60,14 +59,14 @@ int main()
         omppartime1=clock();
         #pragma omp parallel
         {
-            int i;
-            for(i=0;i<N_THREADS;i++)
+            int j;
+            for(j=0;j<N_THREADS;j++)
             {
-                pthread_create(&threadsomp[i],NULL,Rekmultiply,int begin, int end);
+                ompthread=pthread_create(&threadsomp[j],NULL,Multiply,int* array, int n);
             }
-            for(i=0;i<N_THREADS;i++)
+            for(j=0;j<N_THREADS;j++)
             {
-                pthread_join(threadsomp[i],NULL);
+                pthread_join(threadsomp[j],NULL);
             }
         }
         clock_t omppartime2;
@@ -75,7 +74,18 @@ int main()
         clock_t omppartime;
         omppartime=omppartime2-omppartime1;
 
-        runtime_display(sequentialtime,rektime,threadtime,omppartime,n);
+        clock_t omprektime1;
+        omprektime1=clock();
+        #pragma omp rek
+        {
+            omprek=Rekmultiply(array,0,n);
+        }
+        clock_t omprektime2;
+        omprektime2=clock();
+        clock_t omprektime;
+        omprektime=omprektime2-omprektime1;
+
+        runtime_display(sequentialtime,rektime,threadtime,omppartime, omprektime,n);
     }
 }
 
@@ -116,7 +126,7 @@ int Rekmultiply(int* array,int begin, int over)
     }
     return rek;
 }
-void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, int size)
+void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, clock_t omprektime, int size)
 {
     FILE *fp;
    
@@ -127,7 +137,7 @@ void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime
     }
     else
     {
-        fprintf(fp,"\n%d; %.2lf; %.2lf;\n",size, sequentialtime, rektime);
+        fprintf(fp,"\n%d; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf\n",size, sequentialtime, rektime, threadtime, omppartime, omprektime);
         fclose(fp);
     }
     return;
