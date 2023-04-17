@@ -27,7 +27,7 @@ int main()
 }
 list* Request()
 {
-    list *first, *actual, *new;
+    struct list *first, *actual, *new;
     int number=0;
     do{
         printf("Adja meg a szamot! ");

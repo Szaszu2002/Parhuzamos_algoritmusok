@@ -13,7 +13,7 @@ void Upload( int* array, int n);
 array_2* Upload_2(array_2 array2);
 int Multiply(int* array, int size);
 int Rekmultiply(int* array,int begin, int over);
-void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, clock_t omprektime int size); 
+void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, clock_t omprektime, int size); 
 
 struct Array
 {
