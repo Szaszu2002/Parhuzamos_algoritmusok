@@ -10,10 +10,17 @@
 const int N_THREADS = 10;
 
 void Upload( int* array, int n);
+array_2* Upload_2(array_2 array2);
 int Multiply(int* array, int size);
 int Rekmultiply(int* array,int begin, int over);
 void runtime_display(clock_t sequentialtime, clock_t rektime, clock_t threadtime, clock_t omppartime, clock_t omprektime int size); 
 
+struct Array
+{
+    int *data;
+    int n;
+}
+typedef struct Array array_2;
 int main()
 {
     int i;
@@ -26,6 +33,8 @@ int main()
         int multiplyomp;
         int ompthread;
         int omprek;
+        struct array_2 *array2=Upload_2();
+        array2->n=i;
         pthread_t threads[N_THREADS];
         pthread_t threadsomp[N_THREADS];
         Upload(array, n);
@@ -48,7 +57,7 @@ int main()
 
         clock_t threadtime1;
         threadtime1=clock();
-        pthread_create(&threads[1],NULL,Rekmultiply,int* array, int n);
+        pthread_create(&threads[1],NULL,Rekmultiply,array_2);
         pthread_join(threads[1],NULL);
         clock_t threadtime2;
         threadtime2=clock();
@@ -62,7 +71,7 @@ int main()
             int j;
             for(j=0;j<N_THREADS;j++)
             {
-                ompthread=pthread_create(&threadsomp[j],NULL,Multiply,int* array, int n);
+                ompthread=pthread_create(&threadsomp[j],NULL,Multiply,array_2);
             }
             for(j=0;j<N_THREADS;j++)
             {
@@ -100,6 +109,17 @@ void Upload( int* array, int n)
     }
     return;
 }
+array_2* Upload_2()
+{
+    srand(time(NULL));
+    int i;
+    for(i=0;i<array2->n;i++)
+    {
+        array2->data[i]=rand()
+    }
+    return array2;
+}
+
 int Multiply(int* array, int size)
 {
     int multiply;
