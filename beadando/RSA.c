@@ -12,7 +12,7 @@ data2* EncodingText( data *uncoded);//szöveg kódolása
 void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
 data* Decoding(data2 *coded);//dekódolás
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
-void runtime_display(clock_t , clock_t );     //futási idők kiírása egy fájlba
+void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time);     //futási idők kiírása egy fájlba
 
 struct Data
 {
@@ -34,16 +34,63 @@ typedef struct Data2 data2;
 
 int main()
 {
+    clock_t allsequencialtime;  //
+    clock_t palltime;
+    clock_t scanfile_time1; //
+    clock_t scanfile_time2; //
+    clock_t scanfile_time; //
+    clock_t pscanfile_time1;
+    clock_t pscanfile_time2;
+    clock_t pscanfile_time;
+    clock_t encoding_time1; //
+    clock_t encoding_time2; //
+    clock_t encoding_time;  //
+    clock_t pencoding_time1;
+    clock_t pencoding_time2;
+    clock_t pencoding_time;
+    clock_t decoding_time1; //
+    clock_t decoding_time2; //
+    clock_t decoding_time;  //
+    clock_t pdecoding_time1;
+    clock_t pdecoding_time2;
+    clock_t pdecoding_time;
+    clock_t dump_time1; //
+    clock_t dump_time2; //
+    clock_t dump_time;  //
+    clock_t pdump_time1;
+    clock_t pdump_time2;
+    clock_t pdump_time;
+
+    scanfile_time1=clock();
     struct data *uncoded=Scanfile();
+    scanfile_time2=clock();
+    scanfile_time=scanfile_time2-scanfile_time1;
+
+    encoding_time1=clock();
     struct data2 *coded=EncodingText(uncoded);
+    encoding_time2=clock();
+    encoding_time=encoding_time2-encoding_time1;
+
     CodedFileDump(coded);
+
+    decoding_time1=clock();
     uncoded=Decoding(coded);
+    decoding_time2=clock();
+    decoding_time=decoding_time2-decoding_time1;
+
+    dump_time1=clock();
     DecodedFileDump(uncoded);
-    runtime_display();
+    dump_time2=clock();
+    dump_time=dump_time2-dump_time1;
+    allsequencialtime=dump_time2-scanfile_time1;
+
+    //párhuzamos rész!!
+
+    runtime_display(allsequencialtime, palltime, scanfile_time, pscanfile_time, encoding_time, pencoding_time, decoding_time, pdecoding_time, dump_time, pdump_time);
     return 0;
 }
 
-void runtime_display(clock_t ,clock_t )
+void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time)
 {
     FILE *fp;
    
@@ -54,7 +101,7 @@ void runtime_display(clock_t ,clock_t )
     }
     else
     {
-        fprintf(fp,"\n %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf;",,);
+        fprintf(fp,"\n %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf;",allsequencialtime, palltime, scanfile_time, pscanfile_time, encoding_time, pencoding_time, decoding_time, pdecoding_time, dump_time, pdump_time);
         fclose(fp);
     }
     return;
@@ -63,6 +110,7 @@ void runtime_display(clock_t ,clock_t )
 data* ScanFile()
 {
     struct data *uncoded;
+    int size=0, number_of_lines, i=0;
     FILE *fp;
 
     fp=fopen("text.txt","r");
@@ -72,13 +120,31 @@ data* ScanFile()
     }
     else
     {
-        fread();    //megírni !!!
+        while((ch = fgetc(fp)) != EOF) 
+        {
+            if(ch == '\n')
+            {
+                number_of_lines++;
+            }
+        }
+        if (number_of_lines==0) 
+        {
+            printf("\nA fájl üres");
+            return;
+        }
+        while(!feof(fp))
+        {
+            fscanf("%c",uncoded->character[i]); 
+            i++;
+            size++;   
+        }
         fclose();
+        uncoded->n=size;
     }
     return uncoded;
 }
 
-data2* EncodingText( data *uncode)
+data2* EncodingText( data *uncoded)
 {
     struct data2 coded;
     coded->n=uncoded->n;
@@ -913,7 +979,6 @@ void DecodedFileDump(data *uncoded)
     }
     else
     {
-        fprintf(fp,"\n");
         for(i=0;i<uncoded->n;i++)
         {
             fprintf(fp, "%d ", uncoded->new[i]);
