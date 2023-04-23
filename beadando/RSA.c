@@ -85,7 +85,7 @@ int main()
     allsequencialtime=dump_time2-scanfile_time1;
 
     //párhuzamos rész!!
-
+    
     runtime_display(allsequencialtime, palltime, scanfile_time, pscanfile_time, encoding_time, pencoding_time, decoding_time, pdecoding_time, dump_time, pdump_time);
     return 0;
 }

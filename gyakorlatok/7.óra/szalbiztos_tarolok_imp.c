@@ -10,15 +10,24 @@
 void Upload(array* array1);
 list* Request();
 void Listing(list* actual);
+int SearchList(list* actual, int question);
 
 struct Array{
     int *data;
     int size;
-}
+};
 struct List{
     int *data;
     struct pointer *next;
-}
+};
+struct Queue{
+    char *data;
+    int n;
+};
+struct Stract{
+    char *data;
+    int n;
+};
 
 typedef struct Array array;
 typedef struct List list;
@@ -81,4 +90,19 @@ void Upload(array* array1) //tömb feltöltése
         array1->data[i] = rand();
     }
     return;
+}
+
+int SearchList(list* actual, int question)
+{
+    int i;
+    int exists=0;
+    while(actual=NULL)
+    {
+        if(actual==question)
+        {
+            exists++;
+        }
+        actual=actual->next;
+    }
+    return exists;
 }

@@ -19,7 +19,7 @@ struct Array
 {
     int *data;
     int n;
-}
+};
 typedef struct Array array_2;
 int main()
 {
