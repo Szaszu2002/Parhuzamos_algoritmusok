@@ -1,0 +1,2 @@
+Egy program, mely egy .txt kiterjesztésű fájlból beolvas egy egy szöveget, azt karakterenként letárolja. Majd ASCII kód tábla szerint átalakítja azokat 16-os számrendszerbe és RSA kódolással lekódolja a karaktereket. Ezeket egy függvény segítségével kiírja egy fájlba. Egy másik függvény pedig a kódot vissza alakítja az eredeti formátumba, csak ékezetek nélkül.
+A program szekvenciális és szálas megvalósításának idejét is dokumentálja.
