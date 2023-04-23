@@ -7,25 +7,34 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+void Upload(array* array1);
 list* Request();
 void Listing(list* actual);
 
+struct Array{
+    int *data;
+    int size;
+}
 struct List{
     int *data;
     struct pointer *next;
 }
+
+typedef struct Array array;
 typedef struct List list;
+
 int main()
 {
-    
     int n=10;
-    int array[n];
+    struct array *array1;
+    Upload(array1);
     struct list *actual = Request();
     Listing(actual);
-    return 0;
 
+    return 0;
 }
-list* Request()
+
+list* Request() //lista feltöltése
 {
     struct list *first, *actual, *new;
     int number=0;
@@ -52,11 +61,24 @@ list* Request()
     actual=first;
     return actual;
 }
-void Listing(list* actual)
+
+void Listing(list* actual) //lista kiíratása
 {
     while(actual=NULL)
     {
         printf("Actual: %d\n",actual->data);
         actual=actual->next;
     }
+}
+
+void Upload(array* array1) //tömb feltöltése
+{
+    srand(time(NULL));
+    int i;
+    int ok=0;
+    for(i=0; i<array1->n; i++)
+    { 
+        array1->data[i] = rand();
+    }
+    return;
 }
