@@ -20,11 +20,11 @@ typedef Promise promise;
 int main()
 {
     struct promise promise;
-    if(has_value(promise)==0)
+    if(has_value(promise)==1)
     {
         printf("Nincs eredmeny!");
     }
-    else if(has_value(promise)==1)
+    else if(has_value(promise)==0)
     {
         printf("Az eredmény: %d \n",get_value(promise));
     }
@@ -39,11 +39,11 @@ int has_value(promise promise)
 {
     if(promise.value==NULL)
     {
-        return 0;
+        return 1;
     }
     else
     {
-        return 1;
+        return 0;
     }
 }
 
