@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Upload( array* array);
-void QuickSort(array* array);
-void runtime_display(clock_t sequencial_time, clock_t p_time , int size); 
 
 struct Array{
     int *data;
@@ -12,6 +9,9 @@ struct Array{
 
 const int N_THREADS = 10;
 typedef struct Array array;
+
+void MinSort( array* array);
+void Upload( array* array);
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
 
         clock_t sequencial_time1;
         sequencial_time1=clock();
-        QuickSort(array);
+        MinSort(array);
         clock_t sequencial_time2;
         sequencial_time2=clock();
         clock_t sequencial_time;
@@ -35,7 +35,7 @@ int main()
         p_time1=clock();
         for(j=0;j<N_THREADS;j++)
         {
-            pthread_create(&threads[j],NULL,QuickSort, array* array);
+            pthread_create(&threads[j],NULL,MinSort, array* array);
         }
         clock_t p_time2;
         p_time2=clock();
@@ -59,24 +59,11 @@ void Upload( array* array)
     return;
 }
 
-void QuickSort(array* array)
-{
-    int begin=array.data[0];
-    int end=array.data[n-1];
-    if(begin<end)
-    {
-        int half=(end+begin)/2;
-        QuickSort(array,begin, half);
-        QuickSort(array, half+1, end);
-    }
-    return;
-}
-
 void runtime_display(clock_t sequencial_time, clock_t p_time , int size)
 {
     FILE *fp;
    
-    fp=fopen("runtime_beszuro_rendezes.txt","a");
+    fp=fopen("runtime_min_rendezes.txt","a");
     if(fp==NULL)
     {
         printf("\nSikertelen fájl megnyitás");
@@ -87,4 +74,21 @@ void runtime_display(clock_t sequencial_time, clock_t p_time , int size)
         fclose(fp);
     }
     return;
+}
+
+void MinSort( array* array)
+{
+    int i, j;
+    for(i=0;i<array.size-1;i++)
+    {
+        for(j=i+1;j<array.size;i++)
+        {
+            if(array.data[i]>array.data[j])
+            {
+                int tmp=array.data[i];
+                array.data[i]=array.data[j];
+                array.data[j]=tmp;
+            }
+        }
+    }
 }
