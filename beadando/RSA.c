@@ -289,7 +289,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=0;
         }
-        else if(uncoded->character[i] == 'A' || 'Á')
+        else if(uncoded->character[i] == 'A' || uncoded->character[i] == 'Á')
         {
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=1;
@@ -309,7 +309,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=4;
         }
-        else if(uncoded->character[i] == 'E' || 'É')
+        else if(uncoded->character[i] == 'E' || uncoded->character[i] == 'É')
         {
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=5;
@@ -359,7 +359,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=14;
         }
-        else if(uncoded->character[i] == 'O' || 'Ó' || 'Ö' || 'Ő')
+        else if(uncoded->character[i] == 'O' || uncoded->character[i] == 'Ó' || uncoded->character[i] == 'Ö' || uncoded->character[i] == 'Ő')
         {
             coded.firstnumber[i]=4;
             coded.secondnumber[i]=15;
@@ -389,7 +389,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=5;
             coded.secondnumber[i]=4;
         }
-        else if(uncoded->character[i] == 'U' || 'Ú' || 'Ü' || 'Ű')
+        else if(uncoded->character[i] == 'U' || uncoded->character[i] == 'Ú' || uncoded->character[i] == 'Ü' || uncoded->character[i] == 'Ű')
         {
             coded.firstnumber[i]=5;
             coded.secondnumber[i]=5;
@@ -419,7 +419,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=5;
             coded.secondnumber[i]=10;
         }
-        else if(uncoded->character[i] == 'a' || 'á')
+        else if(uncoded->character[i] == 'a' || uncoded->character[i] == 'á')
         {
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=1;
@@ -439,7 +439,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=4;
         }
-        else if(uncoded->character[i] == 'e' || 'é')
+        else if(uncoded->character[i] == 'e' || uncoded->character[i] == 'é')
         {
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=5;
@@ -459,7 +459,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=8;
         }
-        else if(uncoded->character[i] == 'i' || 'í')
+        else if(uncoded->character[i] == 'i' || uncoded->character[i] == 'í')
         {
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=9;
@@ -489,7 +489,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=14;
         }
-        else if(uncoded->character[i] == 'o' || 'ó' || 'ö' || 'ő')
+        else if(uncoded->character[i] == 'o' || uncoded->character[i] == 'ó' || uncoded->character[i] ==  'ö' || uncoded->character[i] == 'ő')
         {
             coded.firstnumber[i]=6;
             coded.secondnumber[i]=15;
@@ -519,7 +519,7 @@ data2* EncodingText( data *uncoded)
             coded.firstnumber[i]=7;
             coded.secondnumber[i]=4;
         }
-        else if(uncoded->character[i] == 'u' || 'ú' || 'ü' || 'ű')
+        else if(uncoded->character[i] == 'u' || uncoded->character[i] == 'ú' || uncoded->character[i] == 'ü' || uncoded->character[i] == 'ű')
         {
             coded.firstnumber[i]=7;
             coded.secondnumber[i]=5;
