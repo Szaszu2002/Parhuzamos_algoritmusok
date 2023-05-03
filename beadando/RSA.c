@@ -7,13 +7,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-data* ScanFile();//szöveg beolvasása
-data2* EncodingText( data *uncoded);//szöveg kódolása
-void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
-data* Decoding(data2 *coded);//dekódolás
-void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
-void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time);     //futási idők kiírása egy fájlba
-
 typedef struct data
 {
     char *character;
@@ -27,6 +20,15 @@ typedef struct data2
     int *code;
     int n;
 }data2;
+
+data* ScanFile();//szöveg beolvasása
+data2* EncodingText( data *uncoded);//szöveg kódolása
+void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
+data* Decoding(data2 *coded);//dekódolás
+void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
+void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time);     //futási idők kiírása egy fájlba
+
+
 
 int main()
 {
@@ -127,7 +129,7 @@ data* ScanFile()
         if (number_of_lines==0) 
         {
             printf("\nA fájl üres");
-            return;
+            return uncoded;
         }
         while(!feof(fp))
         {
