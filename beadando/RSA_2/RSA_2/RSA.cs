@@ -18,8 +18,7 @@ namespace RSA_2
         }
         struct data2
         {
-            public int firstnumber;
-            public int secondnumber;
+            public int number;
             public int code;
             public int n;
         }
@@ -34,406 +33,326 @@ namespace RSA_2
             {
                 if (uncoded[i].character == ' ')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 0;
+                    coded[i].number = 32;
                 }
                 else if (uncoded[i].character == '!')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 33;
                 }
                 else if (uncoded[i].character == '%')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 37;
                 }
                 else if (uncoded[i].character == '(')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 40;
                 }
                 else if (uncoded[i].character == ')')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 41;
                 }
                 else if (uncoded[i].character == '+')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 11;
+                    coded[i].number = 43;
                 }
                 else if (uncoded[i].character == ',')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 12;
+                    coded[i].number = 44;
                 }
                 else if (uncoded[i].character == '-')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 13;
+                    coded[i].number = 45;
                 }
                 else if (uncoded[i].character == '.')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 14;
+                    coded[i].number = 46;
                 }
                 else if (uncoded[i].character == '/')
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 15;
+                    coded[i].number = 47;
                 }
                 else if (uncoded[i].character == '0')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 0;
+                    coded[i].number = 48;
                 }
                 else if (uncoded[i].character == '1')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 49;
                 }
                 else if (uncoded[i].character == '2')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 2;
+                    coded[i].number = 50;
                 }
                 else if (uncoded[i].character == '3')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 51;
                 }
                 else if (uncoded[i].character == '4')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 4;
+                    coded[i].number = 52;
                 }
                 else if (uncoded[i].character == '5')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 53;
                 }
                 else if (uncoded[i].character == '6')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 6;
+                    coded[i].number = 54;
                 }
                 else if (uncoded[i].character == '7')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 7;
+                    coded[i].number = 55;
                 }
                 else if (uncoded[i].character == '8')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 56;
                 }
                 else if (uncoded[i].character == '9')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 57;
                 }
                 else if (uncoded[i].character == ':')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 10;
+                    coded[i].number = 58;
                 }
                 else if (uncoded[i].character == ';')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 11;
+                    coded[i].number = 59;
                 }
                 else if (uncoded[i].character == '<')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 12;
+                    coded[i].number = 60;
                 }
                 else if (uncoded[i].character == '=')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 13;
+                    coded[i].number = 61;
                 }
                 else if (uncoded[i].character == '>')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 14;
+                    coded[i].number = 62;
                 }
                 else if (uncoded[i].character == '?')
                 {
-                    coded[i].firstnumber = 3;
-                    coded[i].secondnumber = 15;
+                    coded[i].number = 63;
                 }
                 else if (uncoded[i].character == '@')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 0;
+                    coded[i].number = 64;
                 }
                 else if (uncoded[i].character == 'A' || uncoded[i].character == 'Á')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 65;
                 }
                 else if (uncoded[i].character == 'B')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 2;
+                    coded[i].number = 66;
                 }
                 else if (uncoded[i].character == 'C')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 67;
                 }
                 else if (uncoded[i].character == 'D')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 4;
+                    coded[i].number = 68;
                 }
                 else if (uncoded[i].character == 'E' || uncoded[i].character == 'É')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 69;
                 }
                 else if (uncoded[i].character == 'F')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 6;
+                    coded[i].number = 70;
                 }
                 else if (uncoded[i].character == 'G')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 7;
+                    coded[i].number = 71;
                 }
                 else if (uncoded[i].character == 'H')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 72;
                 }
                 else if (uncoded[i].character == 'I')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 73;
                 }
                 else if (uncoded[i].character == 'J')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 10;
+                    coded[i].number = 74;
                 }
                 else if (uncoded[i].character == 'K')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 11;
+                    coded[i].number = 75;
                 }
                 else if (uncoded[i].character == 'L')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 12;
+                    coded[i].number = 76;
                 }
                 else if (uncoded[i].character == 'M')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 13;
+                    coded[i].number = 77;
                 }
                 else if (uncoded[i].character == 'N')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 14;
+                    coded[i].number = 78;
                 }
                 else if (uncoded[i].character == 'O' || uncoded[i].character == 'Ó' || uncoded[i].character == 'Ö' || uncoded[i].character == 'Ő')
                 {
-                    coded[i].firstnumber = 4;
-                    coded[i].secondnumber = 15;
+                    coded[i].number = 79;
                 }
                 else if (uncoded[i].character == 'P')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 0;
+                    coded[i].number = 80;
                 }
                 else if (uncoded[i].character == 'Q')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 81;
                 }
                 else if (uncoded[i].character == 'R')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 2;
+                    coded[i].number = 82;
                 }
                 else if (uncoded[i].character == 'S')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 83;
                 }
                 else if (uncoded[i].character == 'T')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 4;
+                    coded[i].number = 84;
                 }
                 else if (uncoded[i].character == 'U' || uncoded[i].character == 'Ú' || uncoded[i].character == 'Ü' || uncoded[i].character == 'Ű')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 85;
                 }
                 else if (uncoded[i].character == 'V')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 6;
+                    coded[i].number = 86;
                 }
                 else if (uncoded[i].character == 'W')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 7;
+                    coded[i].number = 87;
                 }
                 else if (uncoded[i].character == 'X')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 88;
                 }
                 else if (uncoded[i].character == 'Y')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 89;
                 }
                 else if (uncoded[i].character == 'Z')
                 {
-                    coded[i].firstnumber = 5;
-                    coded[i].secondnumber = 10;
+                    coded[i].number = 90;
                 }
                 else if (uncoded[i].character == 'a' || uncoded[i].character == 'á')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 97;
                 }
                 else if (uncoded[i].character == 'b')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 2;
+                    coded[i].number = 98;
                 }
                 else if (uncoded[i].character == 'c')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 99;
                 }
                 else if (uncoded[i].character == 'd')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 4;
+                    coded[i].number = 100;
                 }
                 else if (uncoded[i].character == 'e' || uncoded[i].character == 'é')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 101;
                 }
                 else if (uncoded[i].character == 'f')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 6;
+                    coded[i].number = 102;
                 }
                 else if (uncoded[i].character == 'g')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 7;
+                    coded[i].number = 103;
                 }
                 else if (uncoded[i].character == 'h')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 104;
                 }
                 else if (uncoded[i].character == 'i' || uncoded[i].character == 'í')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 105;
                 }
                 else if (uncoded[i].character == 'j')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 10;
+                    coded[i].number = 106;
                 }
                 else if (uncoded[i].character == 'k')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 11;
+                    coded[i].number = 107;
                 }
                 else if (uncoded[i].character == 'l')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 12;
+                    coded[i].number = 108;
                 }
                 else if (uncoded[i].character == 'm')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 13;
+                    coded[i].number = 109;
                 }
                 else if (uncoded[i].character == 'n')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 14;
+                    coded[i].number = 110;
                 }
                 else if (uncoded[i].character == 'o' || uncoded[i].character == 'ó' || uncoded[i].character == 'ö' || uncoded[i].character == 'ő')
                 {
-                    coded[i].firstnumber = 6;
-                    coded[i].secondnumber = 15;
+                    coded[i].number = 111;
                 }
                 else if (uncoded[i].character == 'p')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 0;
+                    coded[i].number = 112;
                 }
                 else if (uncoded[i].character == 'q')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 1;
+                    coded[i].number = 113;
                 }
                 else if (uncoded[i].character == 'r')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 2;
+                    coded[i].number = 114;
                 }
                 else if (uncoded[i].character == 's')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 115;
                 }
                 else if (uncoded[i].character == 't')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 4;
+                    coded[i].number = 116;
                 }
                 else if (uncoded[i].character == 'u' || uncoded[i].character == 'ú' || uncoded[i].character == 'ü' || uncoded[i].character == 'ű')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 5;
+                    coded[i].number = 117;
                 }
                 else if (uncoded[i].character == 'v')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 6;
+                    coded[i].number = 118;
                 }
                 else if (uncoded[i].character == 'w')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 7;
+                    coded[i].number = 119;
                 }
                 else if (uncoded[i].character == 'x')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 8;
+                    coded[i].number = 120;
                 }
                 else if (uncoded[i].character == 'y')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 9;
+                    coded[i].number = 121;
                 }
                 else if (uncoded[i].character == 'z')
                 {
-                    coded[i].firstnumber = 7;
-                    coded[i].secondnumber = 10;
+                    coded[i].number = 122;
                 }
                 else
                 {
-                    coded[i].firstnumber = 2;
-                    coded[i].secondnumber = 3;
+                    coded[i].number = 35;
                 }
 
-                int M = (16 * (coded[i].firstnumber)) + (coded[i].firstnumber);
+                int M = coded[i].number;
                 int C;
 
                 C = 1 % n;

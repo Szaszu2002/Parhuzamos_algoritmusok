@@ -1,1 +1,2 @@
-Szekvenciális össz idő; Párhuzamosítás össz idő; Szek. fájlbeolvasás; Párh. fájlbeolvasás; Szek. kódolás; Párh. kódolás; Szek. dekódolás; Párh. dekódolás; Szek. fájlbaírás; Párh. fájlbaírás;
+Szekvenciális össz idő; Párhuzamosítás össz idő; Szek. kódolás; Párh. kódolás; Szek. dekódolás; Párh. dekódolás;
+
