@@ -22,7 +22,7 @@ typedef struct data2
 
 data* ScanFile();//szöveg beolvasása
 data2* EncodingText( data *uncoded);//szöveg kódolása
-data2* ParEncodingText( data uncoded.character[i]);
+data2* ParEncodingText( data uncoded->character[i]);
 void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
 data* Decoding(data2 *coded);//dekódolás
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
@@ -73,8 +73,10 @@ int main()
     //párhuzamos rész!!
     
     pstart_time=clock();
-    struct data *puncoded=Scanfile();
-    pcoded.n=(puncoded->n);
+    struct data *puncoded;
+    struct data2 *pcoded;
+    pcoded->n=(puncoded->n);
+    *puncoded=Scanfile();
 
     pencoding_time1=clock();
     //ParEncodingText()
@@ -436,7 +438,7 @@ data2* EncodingText( data *uncoded)
         }
         else if(uncoded->character[i] == 'p')
         {
-            coded.number[i]=112
+            coded.number[i]=112;
         }
         else if(uncoded->character[i] == 'q')
         {
@@ -502,7 +504,7 @@ data2* EncodingText( data *uncoded)
     return coded;
 }
 
-data2* ParEncodingText( data uncoded.character[i])
+data2* ParEncodingText( data uncoded->character[i])
 {
     struct data2 coded;
     int p=1039;

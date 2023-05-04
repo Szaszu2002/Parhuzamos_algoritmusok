@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace RSA_2
 {
@@ -22,9 +23,54 @@ namespace RSA_2
             public int code;
             public int n;
         }
-        public void EncodingText(data[] uncoded, data2[] coded)
+
+        static void Main(string[] args)
         {
+            //algolgoritmus hibádzik!!!
             
+            data[] uncoded = new data[100];
+            data2[] coded = new data2[uncoded.Length];
+            Stopwatch fulltime = new Stopwatch();
+            fulltime.Start();
+            StreamReader read=new StreamReader("text_poet.txt");
+            int i=0;
+            string line;
+            while(!read.EndOfStream)
+            {
+                line = read.ReadLine();
+                //string[] lines = line;
+                for(int j = 0; j < line.Length; j++)
+                {
+                    uncoded[i].character = line[j];
+                    i++;
+                }
+            }
+            read.Close();
+
+            Stopwatch encoding_time = new Stopwatch();
+            encoding_time.Start();
+            EncodingText(uncoded, coded);
+            encoding_time.Stop();
+            CodedFileDump(coded);
+            Stopwatch decoding_time = new Stopwatch();
+            decoding_time.Start();
+            Decoding(coded, uncoded);
+            decoding_time.Stop();
+            DecodedFileDump(uncoded);
+
+            fulltime.Stop();
+            TimeSpan ts_fulltime = fulltime.Elapsed;
+            TimeSpan ts_encoding_time = encoding_time.Elapsed;
+            TimeSpan ts_decoding_time = decoding_time.Elapsed;
+            runtime_display(ts_fulltime, ts_encoding_time, ts_decoding_time);
+            
+
+
+            //Console.ReadLine();
+        }
+
+        static void EncodingText(data[] uncoded, data2[] coded)
+        {
             int p = 1039;
             int q = 2617;
             int n = p * q;
@@ -366,11 +412,17 @@ namespace RSA_2
             });
             return;
         }//kódolás
-        public void CodedFileDump(data2[] coded)
+        static void CodedFileDump(data2[] coded)
         {
+            StreamWriter iro = new StreamWriter("coded_text2.txt");
+            for (int i = 0; i < coded.Length; i++)
+            {
+                iro.Write(coded[i].code + " ");
+            }
+            iro.Close();
 
         }//kódolt szöveg kiírása
-        public void Decoding(data2[] coded, data[] uncoded)
+        static void Decoding(data2[] coded, data[] uncoded)
         {
             int p = 1039;
             int q = 2617;
@@ -380,7 +432,6 @@ namespace RSA_2
             Parallel.For(0, coded.Length, (i) =>
             {
                 int C;
-                int bin = 0;
                 C = 1 % n;  //1
                 C = (coded[i].code * C) % n;
                 C = (C * C) % n; //1
@@ -739,30 +790,21 @@ namespace RSA_2
             });
             return;
         }//dekódolás 
-        public void DecodedFileDump(data[] uncoded)
+        static void DecodedFileDump(data[] uncoded)
         {
-
+            StreamWriter iro = new StreamWriter("decoded_text2.txt");
+            for (int i = 0; i < uncoded.Length; i++)
+            {
+                iro.Write(uncoded[i].new_character + " ");
+            }
+            iro.Close();
         }//dekódolt szöveg kiírása
-        public void runtime_display()
+        static void runtime_display(TimeSpan ts_fulltime, TimeSpan ts_encoding_time, TimeSpan ts_decoding_time)
         {
-
+            StreamWriter iro = new StreamWriter("runtime2.txt",true);
+            iro.Write(ts_fulltime.TotalMilliseconds + "; " + ts_encoding_time.TotalMilliseconds + "; " + ts_decoding_time.TotalMilliseconds); //mérési időket behelyettesíteni
+            iro.Write("\n");
+            iro.Close();
         }//futási idők kiírása
-        public void Main(string[] args)
-        {
-            int[] adatok = File.ReadAllLines("text.txt");
-            //beolvasást és a kiíratásokat megírni !!!! + időmérések
-            
-            data[] uncoded = new data[adatok.Length];
-            data2[] coded = new data2[adatok.Length];
-            EncodingText(uncoded, coded);
-            CodedFileDump(coded);
-            Decoding(coded, uncoded);
-            DecodedFileDump(uncoded);
-            runtime_display();
-            
-
-
-            Console.ReadLine();
-        }
     }
 }
