@@ -28,11 +28,11 @@ namespace RSA_2
         {
             //algolgoritmus hibádzik!!!
             
-            data[] uncoded = new data[100];
+            data[] uncoded = new data[100000];
             data2[] coded = new data2[uncoded.Length];
             Stopwatch fulltime = new Stopwatch();
             fulltime.Start();
-            StreamReader read=new StreamReader("text_poet.txt");
+            StreamReader read=new StreamReader("text_short_story.txt");
             int i=0;
             string line;
             while(!read.EndOfStream)
@@ -72,7 +72,9 @@ namespace RSA_2
         static void EncodingText(data[] uncoded, data2[] coded)
         {
             int p = 1039;
+            //int p = 313;
             int q = 2617;
+            //int q = 157;
             int n = p * q;
             int e = 11;
             Parallel.For(0, uncoded.Length, (i) =>
@@ -399,16 +401,19 @@ namespace RSA_2
                 }
 
                 int M = coded[i].number;
-                int C;
-
+                long C=1;
+                
                 C = 1 % n;
-                C = (M * C) % n;
+                C = (M * C) % n;    //1
+
                 C = (C * C) % n;
+
                 C = (C * C) % n;
-                C = (M * C) % n;
+                C = (M * C) % n;    //1
+
                 C = (C * C) % n;
-                C = (M * C) % n;
-                coded[i].code = C;
+                C = (M * C) % n;    //1
+                coded[i].code = (int) C;
             });
             return;
         }//kódolás
@@ -426,12 +431,15 @@ namespace RSA_2
         {
             int p = 1039;
             int q = 2617;
+            //int p = 313;
+            //int q = 157;
             int n = p * q;
             int e = 11;
             int d = ((7 * (p - 1) * (q - 1)) + 1) / e;  //1727987
+            
             Parallel.For(0, coded.Length, (i) =>
             {
-                int C;
+                long C;
                 C = 1 % n;  //1
                 C = (coded[i].code * C) % n;
                 C = (C * C) % n; //1
@@ -467,6 +475,7 @@ namespace RSA_2
                 C = (coded[i].code * C) % n;
                 C = (C * C) % n; //1
                 C = (coded[i].code * C) % n;
+
                 if (C == 32)
                 {
                     uncoded[i].new_character = ' ';
