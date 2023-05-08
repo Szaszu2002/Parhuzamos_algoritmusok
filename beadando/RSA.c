@@ -19,12 +19,19 @@ typedef struct data2
     int *code;
     int n;
 }data2;
+typedef struct helper
+{
+    char character;
+    int i;
+    int code;
+}helper;
 
 data* ScanFile();//szöveg beolvasása
 data2* EncodingText( data *uncoded);//szöveg kódolása
-data2* ParEncodingText( data uncoded->character[i]);
+data2* ParEncodingText( helper help);
 void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
 data* Decoding(data2 *coded);//dekódolás
+data* ParDecoding(helper help);
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
 void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time);     //futási idők kiírása egy fájlba
 
@@ -50,6 +57,7 @@ int main()
     clock_t pdecoding_time;
     clock_t end_time;
     clock_t pend_time;
+    int i;
 
     start_time=clock();
     struct data *uncoded=Scanfile();
@@ -77,16 +85,28 @@ int main()
     struct data2 *pcoded;
     pcoded->n=(puncoded->n);
     *puncoded=Scanfile();
+    struct helper *help;
 
     pencoding_time1=clock();
-    //ParEncodingText()
+    for(i=0;i<puncoded.n;i++)
+    {
+        helper.i=i;
+        helper.character=puncoded->character[i];
+        //ParEncodingText()
+    }
     pencoding_time2=clock();
     pencoding_time=pencoding_time2-pencoding_time1;
 
     CodedFileDump(pcoded);
 
     pdecoding_time1=clock();
-    //ParDecoding()
+    for(i=0;i<pcoded.n;i++)
+    {
+        help.i=i;
+        help.code=pcoded->code[i];
+        //ParDecoding()
+    }
+    
     pdecoding_time2=clock();
     pdecoding_time=pdecoding_time2-pdecoding_time1;
 
@@ -504,7 +524,7 @@ data2* EncodingText( data *uncoded)
     return coded;
 }
 
-data2* ParEncodingText( data uncoded->character[i])
+data2* ParEncodingText( helper help)
 {
     struct data2 coded;
     int p=1039;
@@ -512,329 +532,329 @@ data2* ParEncodingText( data uncoded->character[i])
     int n=p*q;
     int e=11;
 
-    if(uncoded->character[i] == ' ')
+    if(help.character == ' ')
     {
-        coded.number[i]=32;
+        coded.number[help.i]=32;
     }
-    else if(uncoded->character[i] == '!')
+    else if(help.character == '!')
     {
-        coded.number[i]=33;
+        coded.number[help.i]=33;
     }
-    else if(uncoded->character[i] == '%')
+    else if(help.character == '%')
     {
-        coded.number[i]=37;
+        coded.number[help.i]=37;
     }
-    else if(uncoded->character[i] == '(')
+    else if(help.character == '(')
     {
-        coded.number[i]=40;
+        coded.number[help.i]=40;
     }
-    else if(uncoded->character[i] == ')')
+    else if(help.character == ')')
     {
-        coded.number[i]=41;
+        coded.number[help.i]=41;
     }
-    else if(uncoded->character[i] == '+')
+    else if(help.character == '+')
     {
-        coded.number[i]=43;
+        coded.number[help.i]=43;
     }
-    else if(uncoded->character[i] == ',')
+    else if(help.character == ',')
     {
-        coded.number[i]=44;
+        coded.number[help.i]=44;
     }
-    else if(uncoded->character[i] == '-')
+    else if(help.character == '-')
     {
-        coded.number[i]=45;
+        coded.number[help.i]=45;
     }
-    else if(uncoded->character[i] == '.')
+    else if(help.character == '.')
     {
-        coded.number[i]=46;
+        coded.number[help.i]=46;
     }
-    else if(uncoded->character[i] == '/')
+    else if(help.character == '/')
     {
-        coded.number[i]=47;
+        coded.number[help.i]=47;
     }
-    else if(uncoded->character[i] == '0')
+    else if(help.character == '0')
     {
-        coded.number[i]=48;
+        coded.number[help.i]=48;
     }
-    else if(uncoded->character[i] == '1')
+    else if(help.character == '1')
     {
-        coded.number[i]=49;
+        coded.number[help.i]=49;
     }
-    else if(uncoded->character[i] == '2')
+    else if(help.character == '2')
     {
-        coded.number[i]=50;
+        coded.number[help.i]=50;
     }
-    else if(uncoded->character[i] == '3')
+    else if(help.character == '3')
     {
-        coded.number[i]=51;
+        coded.number[help.i]=51;
     }
-    else if(uncoded->character[i] == '4')
+    else if(help.character == '4')
     {
-        coded.number[i]=52;
+        coded.number[help.i]=52;
     }
-    else if(uncoded->character[i] == '5')
+    else if(help.character == '5')
     {
-        coded.number[i]=53;
+        coded.number[help.i]=53;
     }
-    else if(uncoded->character[i] == '6')
+    else if(help.character == '6')
     {
-        coded.number[i]=54;
+        coded.number[help.i]=54;
     }
-    else if(uncoded->character[i] == '7')
+    else if(help.character == '7')
     {
-        coded.number[i]=55;
+        coded.number[help.i]=55;
     }
-    else if(uncoded->character[i] == '8')
+    else if(help.character == '8')
     {
-        coded.number[i]=56;
+        coded.number[help.i]=56;
     }
-    else if(uncoded->character[i] == '9')
+    else if(help.character == '9')
     {
-        coded.number[i]=57;
+        coded.number[help.i]=57;
     }
-    else if(uncoded->character[i] == ':')
+    else if(help.character == ':')
     {
-        coded.number[i]=58;
+        coded.number[help.i]=58;
     }
-    else if(uncoded->character[i] == ';')
+    else if(help.character == ';')
     {
-        coded.number[i]=59;
+        coded.number[help.i]=59;
     }
-    else if(uncoded->character[i] == '<')
+    else if(help.character == '<')
     {
-        coded.number[i]=60;
+        coded.number[help.i]=60;
     }
-    else if(uncoded->character[i] == '=')
+    else if(help.character == '=')
     {
-        coded.number[i]=61;
+        coded.number[help.i]=61;
     }
-    else if(uncoded->character[i] == '>')
+    else if(help.character == '>')
     {
-        coded.number[i]=62;
+        coded.number[help.i]=62;
     }
-    else if(uncoded->character[i] == '?')
+    else if(help.character == '?')
     {
-        coded.number[i]=63;
+        coded.number[help.i]=63;
     }
-    else if(uncoded->character[i] == '@')
+    else if(help.character == '@')
     {
-        coded.number[i]=64;
+        coded.number[help.i]=64;
     }
-    else if(uncoded->character[i] == 'A' || uncoded->character[i] == 'Á')
+    else if(help.character == 'A' || help.character == 'Á')
     {
-        coded.number[i]=65;
+        coded.number[help.i]=65;
     }
-    else if(uncoded->character[i] == 'B')
+    else if(help.character == 'B')
     {
-        coded.number[i]=66;
+        coded.number[help.i]=66;
     }
-    else if(uncoded->character[i] == 'C')
+    else if(help.character == 'C')
     {
-        coded.number[i]=67;
+        coded.number[help.i]=67;
     }
-    else if(uncoded->character[i] == 'D')
+    else if(help.character == 'D')
     {
-        coded.number[i]=68;
+        coded.number[help.i]=68;
     }
-    else if(uncoded->character[i] == 'E' || uncoded->character[i] == 'É')
+    else if(help.character == 'E' || help.character == 'É')
     {
-        coded.number[i]=69;
+        coded.number[help.i]=69;
     }
-    else if(uncoded->character[i] == 'F')
+    else if(help.character == 'F')
     {
-        coded.number[i]=70;
+        coded.number[help.i]=70;
     }
-    else if(uncoded->character[i] == 'G')
+    else if(help.character == 'G')
     {
-        coded.number[i]=71;
+        coded.number[help.i]=71;
     }
-    else if(uncoded->character[i] == 'H')
+    else if(help.character == 'H')
     {
-        coded.number[i]=72;
+        coded.number[help.i]=72;
     }
-    else if(uncoded->character[i] == 'I')
+    else if(help.character == 'I')
     {
-        coded.number[i]=73;
+        coded.number[help.i]=73;
     }
-    else if(uncoded->character[i] == 'J')
+    else if(help.character == 'J')
     {
-        coded.number[i]=74;
+        coded.number[help.i]=74;
     }
-    else if(uncoded->character[i] == 'K')
+    else if(help.character == 'K')
     {
-        coded.number[i]=75;
+        coded.number[help.i]=75;
     }
-    else if(uncoded->character[i] == 'L')
+    else if(help.character == 'L')
     {
-        coded.number[i]=76;
+        coded.number[help.i]=76;
     }
-    else if(uncoded->character[i] == 'M')
+    else if(help.character == 'M')
     {
-        coded.number[i]=77;
+        coded.number[help.i]=77;
     }
-    else if(uncoded->character[i] == 'N')
+    else if(help.character == 'N')
     {
-        coded.number[i]=78;
+        coded.number[help.i]=78;
     }
-    else if(uncoded->character[i] == 'O' || uncoded->character[i] == 'Ó' || uncoded->character[i] == 'Ö' || uncoded->character[i] == 'Ő')
+    else if(help.character == 'O' || help.character == 'Ó' || help.character == 'Ö' || help.character == 'Ő')
     {
-        coded.number[i]=79;
+        coded.number[help.i]=79;
     }
-    else if(uncoded->character[i] == 'P')
+    else if(help.character == 'P')
     {
-        coded.number[i]=80;
+        coded.number[help.i]=80;
     }
-    else if(uncoded->character[i] == 'Q')
+    else if(help.character == 'Q')
     {
-        coded.number[i]=81;
+        coded.number[help.i]=81;
     }
-    else if(uncoded->character[i] == 'R')
+    else if(help.character == 'R')
     {
-        coded.number[i]=82;
+        coded.number[help.i]=82;
     }
-    else if(uncoded->character[i] == 'S')
+    else if(help.character == 'S')
     {
-        coded.number[i]=83;
+        coded.number[help.i]=83;
     }
-    else if(uncoded->character[i] == 'T')
+    else if(help.character == 'T')
     {
-        coded.number[i]=84;
+        coded.number[help.i]=84;
     }
-    else if(uncoded->character[i] == 'U' || uncoded->character[i] == 'Ú' || uncoded->character[i] == 'Ü' || uncoded->character[i] == 'Ű')
+    else if(help.character == 'U' || help.character == 'Ú' || uhelp.character == 'Ü' || help.character == 'Ű')
     {
-        coded.number[i]=85;
+        coded.number[help.i]=85;
     }
-    else if(uncoded->character[i] == 'V')
+    else if(help.character == 'V')
     {
-        coded.number[i]=86;
+        coded.number[help.i]=86;
     }
-    else if(uncoded->character[i] == 'W')
+    else if(help.character == 'W')
     {
-        coded.number[i]=87;
+        coded.number[help.i]=87;
     }
-    else if(uncoded->character[i] == 'X')
+    else if(help.character == 'X')
     {
-        coded.number[i]=88;
+        coded.number[help.i]=88;
     }
-    else if(uncoded->character[i] == 'Y')
+    else if(help.character == 'Y')
     {
-        coded.number[i]=89;
+        coded.number[help.i]=89;
     }
-    else if(uncoded->character[i] == 'Z')
+    else if(help.character == 'Z')
     {
-        coded.number[i]=90;
+        coded.number[help.i]=90;
     }
-    else if(uncoded->character[i] == 'a' || uncoded->character[i] == 'á')
+    else if(help.character == 'a' || help.character == 'á')
     {
-        coded.number[i]=97;
+        coded.number[help.i]=97;
     }
-    else if(uncoded->character[i] == 'b')
+    else if(help.character == 'b')
     {
-        coded.number[i]=98;
+        coded.number[help.i]=98;
     }
-    else if(uncoded->character[i] == 'c')
+    else if(help.character == 'c')
     {
-        coded.number[i]=99;
+        coded.number[help.i]=99;
     }
-    else if(uncoded->character[i] == 'd')
+    else if(help.character == 'd')
     {
-        coded.number[i]=100;
+        coded.number[help.i]=100;
     }
-    else if(uncoded->character[i] == 'e' || uncoded->character[i] == 'é')
+    else if(help.character == 'e' || help.character == 'é')
     {
-        coded.number[i]=101;
+        coded.number[help.i]=101;
     }
-    else if(uncoded->character[i] == 'f')
+    else if(help.character == 'f')
     {
-        coded.number[i]=102;
+        coded.number[help.i]=102;
     }
-    else if(uncoded->character[i] == 'g')
+    else if(help.character == 'g')
     {
-        coded.number[i]=103;
+        coded.number[help.i]=103;
     }
-    else if(uncoded->character[i] == 'h')
+    else if(help.character == 'h')
     {
-        coded.number[i]=104;
+        coded.number[help.i]=104;
     }
-    else if(uncoded->character[i] == 'i' || uncoded->character[i] == 'í')
+    else if(help.character == 'i' || help.character == 'í')
     {
-        coded.number[i]=105;
+        coded.number[help.i]=105;
     }
-    else if(uncoded->character[i] == 'j')
+    else if(help.character == 'j')
     {
-        coded.number[i]=106;
+        coded.number[help.i]=106;
     }
-    else if(uncoded->character[i] == 'k')
+    else if(help.character == 'k')
     {
-        coded.number[i]=107;
+        coded.number[help.i]=107;
     }
-    else if(uncoded->character[i] == 'l')
+    else if(help.character == 'l')
     {
-        coded.number[i]=108;
+        coded.number[help.i]=108;
     }
-    else if((uncoded->character[i]) = 'm')
+    else if(help.character = 'm')
     {
-        coded.number[i]=109;
+        coded.number[help.i]=109;
     }
-    else if(uncoded->character[i] == 'n')
+    else if(help.character == 'n')
     {
-        coded.number[i]=110;
+        coded.number[help.i]=110;
     }
-    else if(uncoded->character[i] == 'o' || uncoded->character[i] == 'ó' || uncoded->character[i] ==  'ö' || uncoded->character[i] == 'ő')
+    else if(help.character== 'o' || help.character == 'ó' || help.character ==  'ö' || help.character == 'ő')
     {
-        coded.number[i]=111;
+        coded.number[help.i]=111;
     }
-    else if(uncoded->character[i] == 'p')
+    else if(help.character == 'p')
     {
-        coded.number[i]=112
+        coded.number[help.i]=112
     }
-    else if(uncoded->character[i] == 'q')
+    else if(help.character == 'q')
     {
-        coded.number[i]=113;
+        coded.number[help.i]=113;
     }
-    else if(uncoded->character[i] == 'r')
+    else if(help.character == 'r')
     {
-        coded.number[i]=114;
+        coded.number[help.i]=114;
     }
-    else if(uncoded->character[i] == 's')
+    else if(help.character == 's')
     {
-        coded.number[i]=115;
+        coded.number[help.i]=115;
     }
-    else if(uncoded->character[i] == 't')
+    else if(help.character == 't')
     {
-        coded.number[i]=116;
+        coded.number[help.i]=116;
     }
-    else if(uncoded->character[i] == 'u' || uncoded->character[i] == 'ú' || uncoded->character[i] == 'ü' || uncoded->character[i] == 'ű')
+    else if(help.character == 'u' || help.character == 'ú' || help.character == 'ü' || help.character == 'ű')
     {
-        coded.number[i]=117;
+        coded.number[help.i]=117;
     }
-    else if(uncoded->character[i] == 'v')
+    else if(help.character == 'v')
     {
-        coded.number[i]=118;
+        coded.number[help.i]=118;
     }
-    else if(uncoded->character[i] == 'w')
+    else if(help.character == 'w')
     {
-        coded.number[i]=119;
+        coded.number[help.i]=119;
     }
-    else if(uncoded->character[i] == 'x')
+    else if(help.character == 'x')
     {
-        coded.number[i]=120;
+        coded.number[help.i]=120;
     }
-    else if(uncoded->character[i] == 'y')
+    else if(help.character == 'y')
     {
-        coded.number[i]=121;
+        coded.number[help.i]=121;
     }
-    else if(uncoded->character[i] == 'z')
+    else if(help.character == 'z')
     {
-        coded.number[i]=122;
+        coded.number[help.i]=122;
     }
     else
     {
-         coded.number[i]=35;
+         coded.number[help.i]=35;
     }
     //titkosítás rész !!!
     
-    int M=coded.number[i];
+    int M=coded.number[help.i];
     int C;
 
     C=1%n;
@@ -844,7 +864,7 @@ data2* ParEncodingText( data uncoded->character[i])
     C=(M*C)%n;
     C=(C*C)%n;
     C=(M*C)%n;
-    coded.code[i]=C;
+    coded.code[help.i]=C;
 
     return;
 }
@@ -1240,6 +1260,375 @@ data* Decoding(data2 *coded)
         {
             uncoded.new[i]='#';
         }
+    }
+    return uncoded;
+}
+
+data* ParDecoding(helper help)
+{
+    int p=1039;
+    int q=2617;
+    int n=p*q;
+    int e=11;
+    int d=((7*(p-1)*(q-1))+1)/e;  //1727987
+    struct data uncoded;
+
+    int C;
+    C=1%n;  //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    
+    if(C == 32)
+    {
+        uncoded.new[help.i]=' ';
+    }
+    else if(C == 33)
+    {
+        uncoded.new[help.i]='!';
+    }
+    else if(C == 35)
+    {
+        uncoded.new[help.i]='%';
+    }
+    else if(C == 40)
+    {
+        uncoded.new[help.i]='(';
+    }
+    else if(C == 41)
+    {
+        uncoded.new[help.i]=')';
+    }
+    else if(C == 43)
+    {
+        uncoded.new[help.i]='+';
+    }
+    else if(C == 44)
+    {
+        uncoded.new[help.i]=',';
+    }
+    else if(C == 45)
+    {
+        uncoded.new[help.i]='-';
+    }
+    else if(C == 46)
+    {
+        uncoded.new[help.i]='.';
+    }
+    else if(C == 47)
+    {
+        uncoded.new[help.i]='/';
+    }
+    else if(C == 48)
+    {
+        uncoded.new[help.i]='0';
+    }
+    else if(C == 49)
+    {
+        uncoded.new[help.i]='1';
+    }
+    else if(C == 50)
+    {
+        uncoded.new[help.i]='2';
+    }
+    else if(C == 51)
+    {
+        uncoded.new[help.i]='3';
+    }
+    else if(C == 52)
+    {
+        uncoded.new[help.i]='4';
+    }
+    else if(C == 53)
+    {
+        uncoded.new[help.i]='5';
+    }
+    else if(C == 54)
+    {
+        uncoded.new[help.i]='6';
+    }
+    else if(C == 55)
+    {
+        uncoded.new[help.i]='7';
+    }
+    else if(C == 56)
+    {
+        uncoded.new[help.i]='8';
+    }
+    else if(C == 57)
+    {
+        uncoded.new[help.i]='9';
+    }
+    else if(C == 58)
+    {
+        uncoded.new[help.i]=':';
+    }
+    else if(C == 59)
+    {
+        uncoded.new[help.i]=';';
+    }
+    else if(C == 60)
+    {
+        uncoded.new[help.i]='<';
+    }
+    else if(C == 61)
+    {
+        uncoded.new[help.i]='=';
+    }
+    else if(C == 62)
+    {
+        uncoded.new[help.i]='>';
+    }
+    else if(C == 63)
+    {
+        uncoded.new[help.i]='?';
+    }
+    else if(C == 64)
+    {
+        uncoded.new[help.i]='@';
+    }
+    else if(C == 65)
+    {
+        uncoded.new[help.i]='A';
+    }
+    else if(C == 66)
+    {
+        uncoded.new[help.i]='B';
+    }
+    else if(C == 67)
+    {
+        uncoded.new[help.i]='C';
+    }
+    else if(C == 68)
+    {
+        uncoded.new[help.i]='D';
+    }
+    else if(C == 69)
+    {
+        uncoded.new[help.i]='E';
+    }
+    else if(C == 70)
+    {
+        uncoded.new[help.i]='F';
+    }
+    else if(C == 71)
+    {
+        uncoded.new[help.i]='G';
+    }
+    else if(C == 72)
+    {
+        uncoded.new[help.i]='H';
+    }
+    else if(C == 73)
+    {
+        uncoded.new[help.i]='I';
+    }
+    else if(C == 74)
+    {
+        uncoded.new[help.i]='J';
+    }
+    else if(C == 75)
+    {
+        uncoded.new[help.i]='K';
+    }
+    else if(C == 76)
+    {
+        uncoded.new[help.i]='L';
+    }
+    else if(C == 77)
+    {
+        uncoded.new[help.i]='M';
+    }
+    else if(C == 78)
+    {
+        uncoded.new[help.i]='N';
+    }
+    else if(C == 79)
+    {
+        uncoded.new[help.i]='O';
+    }
+    else if(C == 80)
+    {
+        uncoded.new[help.i]='P';
+    }
+    else if(C == 81)
+    {
+        uncoded.new[help.i]='Q';
+    }
+    else if(C == 82)
+    {
+        uncoded.new[help.i]='R';
+    }
+    else if(C == 83)
+    {
+        uncoded.new[help.i]='S';
+    }
+    else if(C == 84)
+    {
+        uncoded.new[help.i]='T';
+    }
+    else if(C == 85)
+    {
+        uncoded.new[help.i]='U';
+    }
+    else if(C == 86)
+    {
+        uncoded.new[help.i]='V';
+    }
+    else if(C == 87)
+    {
+        uncoded.new[help.i]='W';
+    }
+    else if(C == 88)
+    {
+        uncoded.new[help.i]='X';
+    }
+    else if(C == 89)
+    {
+        uncoded.new[help.i]='Y';
+    }
+    else if(C == 90)
+    {
+        uncoded.new[help.i]='Z';
+    }
+    else if(C == 97)
+    {
+        uncoded.new[help.i]='a';
+    }
+    else if(C == 98)
+    {
+        uncoded.new[help.i]='b';
+    }
+    else if(C == 99)
+    {
+        uncoded.new[help.i]='c';
+    }
+    else if(C == 100)
+    {
+        uncoded.new[help.i]='d';
+    }
+    else if(C == 101)
+    {
+        uncoded.new[help.i]='e';
+    }
+    else if(C == 102)
+    {
+        uncoded.new[help.i]='f';
+    }
+    else if(C == 103)
+    {
+        uncoded.new[help.i]='g';
+    }
+    else if(C == 104)
+    {
+        uncoded.new[help.i]='h';
+    }
+    else if(C == 105)
+    {
+        uncoded.new[help.i]='i';
+    }
+    else if(C == 106)
+    {
+        uncoded.new[help.i]='j';
+    }
+    else if(C == 107)
+    {
+        uncoded.new[help.i]='k';
+    }
+    else if(C == 108)
+    {
+        uncoded.new[help.i]='l';
+    }
+    else if(C == 109)
+    {
+        uncoded.new[help.i]='m';
+    }
+    else if(C == 110)
+    {
+        uncoded.new[help.i]='n';
+    }
+    else if(C == 111)
+    {
+        uncoded.new[help.i]='o';
+    }
+    else if(C == 112)
+    {
+        uncoded.new[help.i]='p';
+    }
+    else if(C == 113)
+    {
+        uncoded.new[help.i]='q';
+    }
+    else if(C == 114)
+    {
+        uncoded.new[help.i]='r';
+    }
+    else if(C == 115)
+    {
+        uncoded.new[help.i]='s';
+    }
+    else if(C == 116)
+    {
+        uncoded.new[help.i]='t';
+    }
+    else if(C == 117)
+    {
+        uncoded.new[help.i]='u';
+    }
+    else if(C == 118)
+    {
+        uncoded.new[help.i]='v';
+    }
+    else if(C == 119)
+    {
+        uncoded.new[help.i]='w';
+    }
+    else if(C == 120)
+    {
+        uncoded.new[help.i]='x';
+    }
+    else if(C == 121)
+    {
+        uncoded.new[help.i]='y';
+    }
+    else if(C == 122)
+    {
+        uncoded.new[help.i]='z';
+    }
+    else
+    {
+        uncoded.new[help.i]='#';
     }
     return uncoded;
 }
