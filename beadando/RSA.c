@@ -33,30 +33,39 @@ void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
 data* Decoding(data2 *coded);//dekódolás
 data* ParDecoding(helper help);
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
-void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t scanfile_time, clock_t pscanfile_time, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t dump_time, clock_t pdump_time);     //futási idők kiírása egy fájlba
+void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t openmpalltime, clock_t encoding_time, clock_t pencoding_time, clock_t openmpencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t openmpdecoding_time);     //futási idők kiírása egy fájlba
 
 
 
 int main()
 {
     clock_t allsequencialtime;  //
-    clock_t palltime;
+    clock_t palltime; //
+    clock_t openmpalltime;
     clock_t start_time; //
     clock_t pstart_time; //
+    clock_t openmpstart_time;
     clock_t encoding_time1; //
     clock_t encoding_time2; //
     clock_t encoding_time;  //
     clock_t pencoding_time1; //
     clock_t pencoding_time2;
     clock_t pencoding_time;
+    clock_t openmpencoding_time1;
+    clock_t openmpencoding_time2;
+    clock_t openmpencoding_time;
     clock_t decoding_time1; //
     clock_t decoding_time2; //
     clock_t decoding_time;  //
     clock_t pdecoding_time1;
     clock_t pdecoding_time2;
     clock_t pdecoding_time;
+    clock_t openmpdecoding_time1;
+    clock_t openmpdecoding_time2;
+    clock_t openmpdecoding_time;
     clock_t end_time;
     clock_t pend_time;
+    clock_t openmpend_time;
     int i;
 
     start_time=clock();
@@ -78,7 +87,7 @@ int main()
     end_time=clock();
     allsequencialtime=end_time-start_time;
 
-    //párhuzamos rész!!
+    //párhuzamos rész !!!
     
     pstart_time=clock();
     struct data *puncoded;
@@ -90,9 +99,9 @@ int main()
     pencoding_time1=clock();
     for(i=0;i<puncoded.n;i++)
     {
-        helper.i=i;
-        helper.character=puncoded->character[i];
-        //ParEncodingText()
+        help.i=i;
+        help.character=puncoded->character[i];
+        pthread_create(&threads[i],NULL,ParEncodingText,help);
     }
     pencoding_time2=clock();
     pencoding_time=pencoding_time2-pencoding_time1;
@@ -104,21 +113,65 @@ int main()
     {
         help.i=i;
         help.code=pcoded->code[i];
-        //ParDecoding()
+        pthread_create(&threads[i],NULL,ParDecoding,help);
     }
     
     pdecoding_time2=clock();
     pdecoding_time=pdecoding_time2-pdecoding_time1;
 
-    DecodedFileDump(uncoded);
+    DecodedFileDump(puncoded);
     pend_time=clock();
     palltime=pend_time-pstart_time;
 
-    runtime_display(allsequencialtime, palltime, encoding_time, pencoding_time, decoding_time, pdecoding_time);
+    //OPENMP rész !!!
+
+    openmpstart_time=clock();
+    struct data *ouncoded;
+    struct data2 *ocoded;
+    ocoded->n=(ouncoded->n);
+    *ouncoded=Scanfile();
+
+    openmpencoding_time1=clock();
+    #pragma omp parallel
+    {
+        int j;
+        for(j=0;j<ocoded.n;j++)
+        {
+            help.i=j;
+            help.character=ouncoded->character[j];
+            pthread_create(&threadsomp[j],NULL,ParEncodingText,help);
+        }
+    }
+    openmpencoding_time2=clock();
+    openmpencoding_time=openmpencoding_time2-openmpencoding_time1;
+
+    CodedFileDump(ocoded);
+
+    openmpdecoding_time1=clock();
+    #pragma omp parallel
+    {
+        int j;
+        for(j=0;j<ocoded.n;j++)
+        {
+            help.i=i;
+            help.code=pcoded->code[j];
+            pthread_create(&threadsomp[j],NULL,ParDecoding,help);
+        }
+    }
+    openmpdecoding_time2=clock();
+    openmpdecoding_time=openmpdecoding_time2-openmpdecoding_time1;
+
+    DecodedFileDump(ouncoded);
+    openmpend_time=clock();
+    openmpalltime=openmpend_time-openmpstart_time;
+
+
+
+    runtime_display(allsequencialtime, palltime, openmpalltime, encoding_time, pencoding_time, openmpencoding_time, decoding_time, pdecoding_time, openmpdecoding_time);
     return 0;
 }
 
-void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t encoding_time, clock_t pencoding_time, clock_t decoding_time, clock_t pdecoding_time)
+void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t openmpalltime, clock_t encoding_time, clock_t pencoding_time, clock_t openmpencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t openmpdecoding_time)
 {
     FILE *fp;
    
@@ -129,7 +182,7 @@ void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t encodi
     }
     else
     {
-        fprintf(fp,"\n %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf;",allsequencialtime, palltime, encoding_time, pencoding_time, decoding_time, pdecoding_time);
+        fprintf(fp,"\n %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf; %.2lf", allsequencialtime, palltime, openmpalltime, encoding_time, pencoding_time, openmpencoding_time, decoding_time, pdecoding_time, openmpdecoding_time);
         fclose(fp);
     }
     return;
@@ -1309,7 +1362,7 @@ data* ParDecoding(helper help)
     C=(help->code*C)%n;
     C=(C*C)%n; //1
     C=(help->code*C)%n;
-    
+
     if(C == 32)
     {
         uncoded.new[help.i]=' ';

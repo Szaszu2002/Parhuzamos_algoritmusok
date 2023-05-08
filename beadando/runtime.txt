@@ -1,2 +1,1 @@
-Szekvenciális össz idő; Párhuzamosítás össz idő; Szek. kódolás; Párh. kódolás; Szek. dekódolás; Párh. dekódolás;
-
+Szekvenciális össz idő; Párhuzamosítás össz idő; OPENMP össz idő; Szek. kódolás; Párh. kódolás; OPENMP kódolás; Szek. dekódolás; Párh. dekódolás; OPENMP dekódolás;
