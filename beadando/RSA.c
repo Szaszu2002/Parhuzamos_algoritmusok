@@ -67,9 +67,11 @@ int main()
     clock_t pend_time;
     clock_t openmpend_time;
     int i;
-
+    
     start_time=clock();
     struct data *uncoded=Scanfile();
+    pthread_t threads[uncoded->n];
+    pthread_t threadsomp[uncoded->n];
 
     encoding_time1=clock();
     struct data2 *coded=EncodingText(uncoded);
@@ -97,11 +99,11 @@ int main()
     struct helper *help;
 
     pencoding_time1=clock();
-    for(i=0;i<puncoded.n;i++)
+    for(i=0;i<puncoded->n;i++)
     {
-        help.i=i;
-        help.character=puncoded->character[i];
-        pthread_create(&threads[i],NULL,ParEncodingText,help);
+        help->i=i;
+        help->character=puncoded->character[i];
+        pcoded=pthread_create(&threads[i],NULL,ParEncodingText,help);
     }
     pencoding_time2=clock();
     pencoding_time=pencoding_time2-pencoding_time1;
@@ -109,11 +111,11 @@ int main()
     CodedFileDump(pcoded);
 
     pdecoding_time1=clock();
-    for(i=0;i<pcoded.n;i++)
+    for(i=0;i<pcoded->n;i++)
     {
-        help.i=i;
-        help.code=pcoded->code[i];
-        pthread_create(&threads[i],NULL,ParDecoding,help);
+        help->i=i;
+        help->code=pcoded->code[i];
+        puncoded=pthread_create(&threads[i],NULL,ParDecoding,help);
     }
     
     pdecoding_time2=clock();
@@ -135,11 +137,11 @@ int main()
     #pragma omp parallel
     {
         int j;
-        for(j=0;j<ocoded.n;j++)
+        for(j=0;j<ocoded->n;j++)
         {
-            help.i=j;
-            help.character=ouncoded->character[j];
-            pthread_create(&threadsomp[j],NULL,ParEncodingText,help);
+            help->i=j;
+            help->character=ouncoded->character[j];
+            ocoded=pthread_create(&threadsomp[j],NULL,ParEncodingText,help);
         }
     }
     openmpencoding_time2=clock();
@@ -151,11 +153,11 @@ int main()
     #pragma omp parallel
     {
         int j;
-        for(j=0;j<ocoded.n;j++)
+        for(j=0;j<ocoded->n;j++)
         {
-            help.i=i;
-            help.code=pcoded->code[j];
-            pthread_create(&threadsomp[j],NULL,ParDecoding,help);
+            help->i=i;
+            help->code=pcoded->code[j];
+            ouncoded=pthread_create(&threadsomp[j],NULL,ParDecoding,help);
         }
     }
     openmpdecoding_time2=clock();
@@ -345,7 +347,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=64;
         }
-        else if(uncoded->character[i] == 'A' || uncoded->character[i] == 'Á')
+        else if(uncoded->character[i] == 'A')
         {
             coded.number[i]=65;
         }
@@ -361,7 +363,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=68;
         }
-        else if(uncoded->character[i] == 'E' || uncoded->character[i] == 'É')
+        else if(uncoded->character[i] == 'E')
         {
             coded.number[i]=69;
         }
@@ -401,7 +403,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=78;
         }
-        else if(uncoded->character[i] == 'O' || uncoded->character[i] == 'Ó' || uncoded->character[i] == 'Ö' || uncoded->character[i] == 'Ő')
+        else if(uncoded->character[i] == 'O')
         {
             coded.number[i]=79;
         }
@@ -425,7 +427,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=84;
         }
-        else if(uncoded->character[i] == 'U' || uncoded->character[i] == 'Ú' || uncoded->character[i] == 'Ü' || uncoded->character[i] == 'Ű')
+        else if(uncoded->character[i] == 'U')
         {
             coded.number[i]=85;
         }
@@ -449,7 +451,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=90;
         }
-        else if(uncoded->character[i] == 'a' || uncoded->character[i] == 'á')
+        else if(uncoded->character[i] == 'a')
         {
             coded.number[i]=97;
         }
@@ -465,7 +467,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=100;
         }
-        else if(uncoded->character[i] == 'e' || uncoded->character[i] == 'é')
+        else if(uncoded->character[i] == 'e')
         {
             coded.number[i]=101;
         }
@@ -481,7 +483,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=104;
         }
-        else if(uncoded->character[i] == 'i' || uncoded->character[i] == 'í')
+        else if(uncoded->character[i] == 'i')
         {
             coded.number[i]=105;
         }
@@ -505,7 +507,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=110;
         }
-        else if(uncoded->character[i] == 'o' || uncoded->character[i] == 'ó' || uncoded->character[i] ==  'ö' || uncoded->character[i] == 'ő')
+        else if(uncoded->character[i] == 'o')
         {
             coded.number[i]=111;
         }
@@ -529,7 +531,7 @@ data2* EncodingText( data *uncoded)
         {
             coded.number[i]=116;
         }
-        else if(uncoded->character[i] == 'u' || uncoded->character[i] == 'ú' || uncoded->character[i] == 'ü' || uncoded->character[i] == 'ű')
+        else if(uncoded->character[i] == 'u')
         {
             coded.number[i]=117;
         }
@@ -693,7 +695,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=64;
     }
-    else if(help.character == 'A' || help.character == 'Á')
+    else if(help.character == 'A')
     {
         coded.number[help.i]=65;
     }
@@ -709,7 +711,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=68;
     }
-    else if(help.character == 'E' || help.character == 'É')
+    else if(help.character == 'E')
     {
         coded.number[help.i]=69;
     }
@@ -749,7 +751,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=78;
     }
-    else if(help.character == 'O' || help.character == 'Ó' || help.character == 'Ö' || help.character == 'Ő')
+    else if(help.character == 'O')
     {
         coded.number[help.i]=79;
     }
@@ -773,7 +775,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=84;
     }
-    else if(help.character == 'U' || help.character == 'Ú' || uhelp.character == 'Ü' || help.character == 'Ű')
+    else if(help.character == 'U')
     {
         coded.number[help.i]=85;
     }
@@ -797,7 +799,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=90;
     }
-    else if(help.character == 'a' || help.character == 'á')
+    else if(help.character == 'a')
     {
         coded.number[help.i]=97;
     }
@@ -813,7 +815,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=100;
     }
-    else if(help.character == 'e' || help.character == 'é')
+    else if(help.character == 'e')
     {
         coded.number[help.i]=101;
     }
@@ -829,7 +831,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=104;
     }
-    else if(help.character == 'i' || help.character == 'í')
+    else if(help.character == 'i')
     {
         coded.number[help.i]=105;
     }
@@ -853,13 +855,13 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=110;
     }
-    else if(help.character== 'o' || help.character == 'ó' || help.character ==  'ö' || help.character == 'ő')
+    else if(help.character == 'o')
     {
         coded.number[help.i]=111;
     }
     else if(help.character == 'p')
     {
-        coded.number[help.i]=112
+        coded.number[help.i]=112;
     }
     else if(help.character == 'q')
     {
@@ -877,7 +879,7 @@ data2* ParEncodingText( helper help)
     {
         coded.number[help.i]=116;
     }
-    else if(help.character == 'u' || help.character == 'ú' || help.character == 'ü' || help.character == 'ű')
+    else if(help.character == 'u')
     {
         coded.number[help.i]=117;
     }
@@ -919,7 +921,7 @@ data2* ParEncodingText( helper help)
     C=(M*C)%n;
     coded.code[help.i]=C;
 
-    return;
+    return coded;
 }
 
 void CodedFileDump(data2 *coded)
@@ -1328,40 +1330,40 @@ data* ParDecoding(helper help)
 
     int C;
     C=1%n;  //1
-    C=(help->code*C)%n;
+    C=(help.code*C)%n;
     C=(C*C)%n; //1
-    C=(help->code*C)%n;
+    C=(help.code*C)%n;
     C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
-    C=(C*C)%n; //1
-    C=(help->code*C)%n;
+    C=(help.code*C)%n;
     C=(C*C)%n; //0
     C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help->code*C)%n;
+    C=(help.code*C)%n;
+    C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help->code*C)%n;
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
+    C=(C*C)%n; //1
+    C=(help.code*C)%n;
 
     if(C == 32)
     {
