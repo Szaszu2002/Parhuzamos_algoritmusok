@@ -26,12 +26,12 @@ typedef struct helper
     int code;
 }helper;
 
-data* ScanFile();//szöveg beolvasása
-data2* EncodingText( data *uncoded);//szöveg kódolása
-data2* ParEncodingText( helper help);
+data ScanFile();//szöveg beolvasása
+data2 EncodingText( data *uncoded);//szöveg kódolása
+data2 ParEncodingText( helper help);
 void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
-data* Decoding(data2 *coded);//dekódolás
-data* ParDecoding(helper help);
+data Decoding(data2 *coded);//dekódolás
+data ParDecoding(helper help);
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
 void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t openmpalltime, clock_t encoding_time, clock_t pencoding_time, clock_t openmpencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t openmpdecoding_time);     //futási idők kiírása egy fájlba
 
@@ -69,101 +69,103 @@ int main()
     int i;
     
     start_time=clock();
-    struct data *uncoded=Scanfile();
-    pthread_t threads[uncoded->n];
-    pthread_t threadsomp[uncoded->n];
+    struct data uncoded;
+    uncoded=Scanfile();
+    pthread_t threads[uncoded.n];
+    pthread_t threadsomp[uncoded.n];
 
     encoding_time1=clock();
-    struct data2 *coded=EncodingText(uncoded);
+    struct data2 coded;
+    coded=EncodingText(uncoded);
     encoding_time2=clock();
     encoding_time=encoding_time2-encoding_time1;
 
-    CodedFileDump(coded);
+    CodedFileDump(&coded);
 
     decoding_time1=clock();
-    uncoded=Decoding(coded);
+    uncoded=Decoding(&coded);
     decoding_time2=clock();
     decoding_time=decoding_time2-decoding_time1;
 
-    DecodedFileDump(uncoded);
+    DecodedFileDump(&uncoded);
     end_time=clock();
     allsequencialtime=end_time-start_time;
 
     //párhuzamos rész !!!
     
     pstart_time=clock();
-    struct data *puncoded;
-    struct data2 *pcoded;
-    pcoded->n=(puncoded->n);
-    *puncoded=Scanfile();
-    struct helper *help;
+    struct data puncoded;3
+    struct data2 pcoded;
+    pcoded.n=(puncoded.n);
+    puncoded=Scanfile();
+    struct helper help;
 
     pencoding_time1=clock();
-    for(i=0;i<puncoded->n;i++)
+    for(i=0;i<puncoded.n;i++)
     {
-        help->i=i;
-        help->character=puncoded->character[i];
-        pcoded=pthread_create(&threads[i],NULL,ParEncodingText,help);
+        help.i=i;
+        help.character=puncoded.character[i];
+        pcoded=pthread_create(&threads[i],NULL,ParEncodingText,&help);
     }
     pencoding_time2=clock();
     pencoding_time=pencoding_time2-pencoding_time1;
 
-    CodedFileDump(pcoded);
+    CodedFileDump(&pcoded);
 
     pdecoding_time1=clock();
-    for(i=0;i<pcoded->n;i++)
+    for(i=0;i<pcoded.n;i++)
     {
-        help->i=i;
-        help->code=pcoded->code[i];
-        puncoded=pthread_create(&threads[i],NULL,ParDecoding,help);
+        help.i=i;
+        help.code=pcoded.code[i];
+        puncoded=pthread_create(&threads[i],NULL,ParDecoding,&help);
     }
     
     pdecoding_time2=clock();
     pdecoding_time=pdecoding_time2-pdecoding_time1;
 
-    DecodedFileDump(puncoded);
+    DecodedFileDump(&puncoded);
     pend_time=clock();
     palltime=pend_time-pstart_time;
 
     //OPENMP rész !!!
 
     openmpstart_time=clock();
-    struct data *ouncoded;
-    struct data2 *ocoded;
-    ocoded->n=(ouncoded->n);
-    *ouncoded=Scanfile();
+    struct data ouncoded;
+    struct data2 ocoded;
+    ocoded.n=(ouncoded.n);
+    ouncoded=Scanfile();
 
     openmpencoding_time1=clock();
     #pragma omp parallel
     {
         int j;
-        for(j=0;j<ocoded->n;j++)
+        for(j=0;j<ocoded.n;j++)
         {
-            help->i=j;
-            help->character=ouncoded->character[j];
-            ocoded=pthread_create(&threadsomp[j],NULL,ParEncodingText,help);
+            help.i=j;
+            help.character=ouncoded.character[j];
+            ocoded=pthread_create(&threadsomp[j],NULL,ParEncodingText,&help);
         }
     }
     openmpencoding_time2=clock();
     openmpencoding_time=openmpencoding_time2-openmpencoding_time1;
 
-    CodedFileDump(ocoded);
+    CodedFileDump(&ocoded);
 
     openmpdecoding_time1=clock();
     #pragma omp parallel
     {
         int j;
-        for(j=0;j<ocoded->n;j++)
+        for(j=0;j<ocoded.n;j++)
         {
-            help->i=i;
-            help->code=pcoded->code[j];
-            ouncoded=pthread_create(&threadsomp[j],NULL,ParDecoding,help);
+            help.i=i;
+            help.code=pcoded.code[j];
+            ouncoded=pthread_create(&threadsomp[j],NULL,ParDecoding,&help);
         }
     }
     openmpdecoding_time2=clock();
     openmpdecoding_time=openmpdecoding_time2-openmpdecoding_time1;
 
-    DecodedFileDump(ouncoded);
+    DecodedFileDump(&ouncoded);
     openmpend_time=clock();
     openmpalltime=openmpend_time-openmpstart_time;
 
@@ -190,7 +192,7 @@ void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t openmp
     return;
 }
 
-data* ScanFile()
+data ScanFile()
 {
     struct data *uncoded;
     int size=0, number_of_lines, i=0;
@@ -214,7 +216,7 @@ data* ScanFile()
         if (number_of_lines==0) 
         {
             printf("\nA fájl üres");
-            return uncoded;
+            return *uncoded;
         }
         while(!feof(fp))
         {
@@ -225,10 +227,10 @@ data* ScanFile()
         fclose(fp);
         uncoded->n=size;
     }
-    return uncoded;
+    return *uncoded;
 }
 
-data2* EncodingText( data *uncoded)
+data2 EncodingText( data *uncoded)
 {
     struct data2 coded;
     coded.n=(uncoded->n);
@@ -579,7 +581,7 @@ data2* EncodingText( data *uncoded)
     return coded;
 }
 
-data2* ParEncodingText( helper help)
+data2 ParEncodingText( helper help)
 {
     struct data2 coded;
     int p=1039;
@@ -946,7 +948,7 @@ void CodedFileDump(data2 *coded)
     return;
 }
 
-data* Decoding(data2 *coded)
+data Decoding(data2 *coded)
 {
     int i;
     int p=1039;
@@ -1319,7 +1321,7 @@ data* Decoding(data2 *coded)
     return uncoded;
 }
 
-data* ParDecoding(helper help)
+data ParDecoding(helper help)
 {
     int p=1039;
     int q=2617;
