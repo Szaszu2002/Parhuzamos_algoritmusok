@@ -28,11 +28,11 @@ namespace RSA_2
         {
             //algolgoritmus hibádzik!!!
             
-            data[] uncoded = new data[100000];
+            data[] uncoded = new data[10];
             data2[] coded = new data2[uncoded.Length];
             Stopwatch fulltime = new Stopwatch();
             fulltime.Start();
-            StreamReader read=new StreamReader("text_Orkeny4.txt");
+            StreamReader read=new StreamReader("text_quote5.txt");
             int i=0;
             string line;
             while(!read.EndOfStream)
