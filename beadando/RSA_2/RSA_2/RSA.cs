@@ -32,7 +32,7 @@ namespace RSA_2
             data2[] coded = new data2[uncoded.Length];
             Stopwatch fulltime = new Stopwatch();
             fulltime.Start();
-            StreamReader read=new StreamReader("text_short_story.txt");
+            StreamReader read=new StreamReader("text_Orkeny4.txt");
             int i=0;
             string line;
             while(!read.EndOfStream)
@@ -79,327 +79,301 @@ namespace RSA_2
             int e = 11;
             Parallel.For(0, uncoded.Length, (i) =>
             {
-                if (uncoded[i].character == ' ')
-                {
-                    coded[i].number = 32;
-                }
-                else if (uncoded[i].character == '!')
-                {
-                    coded[i].number = 33;
-                }
-                else if (uncoded[i].character == '%')
-                {
-                    coded[i].number = 37;
-                }
-                else if (uncoded[i].character == '(')
-                {
-                    coded[i].number = 40;
-                }
-                else if (uncoded[i].character == ')')
-                {
-                    coded[i].number = 41;
-                }
-                else if (uncoded[i].character == '+')
-                {
-                    coded[i].number = 43;
-                }
-                else if (uncoded[i].character == ',')
-                {
-                    coded[i].number = 44;
-                }
-                else if (uncoded[i].character == '-')
-                {
-                    coded[i].number = 45;
-                }
-                else if (uncoded[i].character == '.')
-                {
-                    coded[i].number = 46;
-                }
-                else if (uncoded[i].character == '/')
-                {
-                    coded[i].number = 47;
-                }
-                else if (uncoded[i].character == '0')
-                {
-                    coded[i].number = 48;
-                }
-                else if (uncoded[i].character == '1')
-                {
-                    coded[i].number = 49;
-                }
-                else if (uncoded[i].character == '2')
-                {
-                    coded[i].number = 50;
-                }
-                else if (uncoded[i].character == '3')
-                {
-                    coded[i].number = 51;
-                }
-                else if (uncoded[i].character == '4')
-                {
-                    coded[i].number = 52;
-                }
-                else if (uncoded[i].character == '5')
-                {
-                    coded[i].number = 53;
-                }
-                else if (uncoded[i].character == '6')
-                {
-                    coded[i].number = 54;
-                }
-                else if (uncoded[i].character == '7')
-                {
-                    coded[i].number = 55;
-                }
-                else if (uncoded[i].character == '8')
-                {
-                    coded[i].number = 56;
-                }
-                else if (uncoded[i].character == '9')
-                {
-                    coded[i].number = 57;
-                }
-                else if (uncoded[i].character == ':')
-                {
-                    coded[i].number = 58;
-                }
-                else if (uncoded[i].character == ';')
-                {
-                    coded[i].number = 59;
-                }
-                else if (uncoded[i].character == '<')
-                {
-                    coded[i].number = 60;
-                }
-                else if (uncoded[i].character == '=')
-                {
-                    coded[i].number = 61;
-                }
-                else if (uncoded[i].character == '>')
-                {
-                    coded[i].number = 62;
-                }
-                else if (uncoded[i].character == '?')
-                {
-                    coded[i].number = 63;
-                }
-                else if (uncoded[i].character == '@')
-                {
-                    coded[i].number = 64;
-                }
-                else if (uncoded[i].character == 'A' || uncoded[i].character == 'Á')
-                {
-                    coded[i].number = 65;
-                }
-                else if (uncoded[i].character == 'B')
-                {
-                    coded[i].number = 66;
-                }
-                else if (uncoded[i].character == 'C')
-                {
-                    coded[i].number = 67;
-                }
-                else if (uncoded[i].character == 'D')
-                {
-                    coded[i].number = 68;
-                }
-                else if (uncoded[i].character == 'E' || uncoded[i].character == 'É')
-                {
-                    coded[i].number = 69;
-                }
-                else if (uncoded[i].character == 'F')
-                {
-                    coded[i].number = 70;
-                }
-                else if (uncoded[i].character == 'G')
-                {
-                    coded[i].number = 71;
-                }
-                else if (uncoded[i].character == 'H')
-                {
-                    coded[i].number = 72;
-                }
-                else if (uncoded[i].character == 'I')
-                {
-                    coded[i].number = 73;
-                }
-                else if (uncoded[i].character == 'J')
-                {
-                    coded[i].number = 74;
-                }
-                else if (uncoded[i].character == 'K')
-                {
-                    coded[i].number = 75;
-                }
-                else if (uncoded[i].character == 'L')
-                {
-                    coded[i].number = 76;
-                }
-                else if (uncoded[i].character == 'M')
-                {
-                    coded[i].number = 77;
-                }
-                else if (uncoded[i].character == 'N')
-                {
-                    coded[i].number = 78;
-                }
-                else if (uncoded[i].character == 'O' || uncoded[i].character == 'Ó' || uncoded[i].character == 'Ö' || uncoded[i].character == 'Ő')
-                {
-                    coded[i].number = 79;
-                }
-                else if (uncoded[i].character == 'P')
-                {
-                    coded[i].number = 80;
-                }
-                else if (uncoded[i].character == 'Q')
-                {
-                    coded[i].number = 81;
-                }
-                else if (uncoded[i].character == 'R')
-                {
-                    coded[i].number = 82;
-                }
-                else if (uncoded[i].character == 'S')
-                {
-                    coded[i].number = 83;
-                }
-                else if (uncoded[i].character == 'T')
-                {
-                    coded[i].number = 84;
-                }
-                else if (uncoded[i].character == 'U' || uncoded[i].character == 'Ú' || uncoded[i].character == 'Ü' || uncoded[i].character == 'Ű')
-                {
-                    coded[i].number = 85;
-                }
-                else if (uncoded[i].character == 'V')
-                {
-                    coded[i].number = 86;
-                }
-                else if (uncoded[i].character == 'W')
-                {
-                    coded[i].number = 87;
-                }
-                else if (uncoded[i].character == 'X')
-                {
-                    coded[i].number = 88;
-                }
-                else if (uncoded[i].character == 'Y')
-                {
-                    coded[i].number = 89;
-                }
-                else if (uncoded[i].character == 'Z')
-                {
-                    coded[i].number = 90;
-                }
-                else if (uncoded[i].character == 'a' || uncoded[i].character == 'á')
-                {
-                    coded[i].number = 97;
-                }
-                else if (uncoded[i].character == 'b')
-                {
-                    coded[i].number = 98;
-                }
-                else if (uncoded[i].character == 'c')
-                {
-                    coded[i].number = 99;
-                }
-                else if (uncoded[i].character == 'd')
-                {
-                    coded[i].number = 100;
-                }
-                else if (uncoded[i].character == 'e' || uncoded[i].character == 'é')
-                {
-                    coded[i].number = 101;
-                }
-                else if (uncoded[i].character == 'f')
-                {
-                    coded[i].number = 102;
-                }
-                else if (uncoded[i].character == 'g')
-                {
-                    coded[i].number = 103;
-                }
-                else if (uncoded[i].character == 'h')
-                {
-                    coded[i].number = 104;
-                }
-                else if (uncoded[i].character == 'i' || uncoded[i].character == 'í')
-                {
-                    coded[i].number = 105;
-                }
-                else if (uncoded[i].character == 'j')
-                {
-                    coded[i].number = 106;
-                }
-                else if (uncoded[i].character == 'k')
-                {
-                    coded[i].number = 107;
-                }
-                else if (uncoded[i].character == 'l')
-                {
-                    coded[i].number = 108;
-                }
-                else if (uncoded[i].character == 'm')
-                {
-                    coded[i].number = 109;
-                }
-                else if (uncoded[i].character == 'n')
-                {
-                    coded[i].number = 110;
-                }
-                else if (uncoded[i].character == 'o' || uncoded[i].character == 'ó' || uncoded[i].character == 'ö' || uncoded[i].character == 'ő')
-                {
-                    coded[i].number = 111;
-                }
-                else if (uncoded[i].character == 'p')
-                {
-                    coded[i].number = 112;
-                }
-                else if (uncoded[i].character == 'q')
-                {
-                    coded[i].number = 113;
-                }
-                else if (uncoded[i].character == 'r')
-                {
-                    coded[i].number = 114;
-                }
-                else if (uncoded[i].character == 's')
-                {
-                    coded[i].number = 115;
-                }
-                else if (uncoded[i].character == 't')
-                {
-                    coded[i].number = 116;
-                }
-                else if (uncoded[i].character == 'u' || uncoded[i].character == 'ú' || uncoded[i].character == 'ü' || uncoded[i].character == 'ű')
-                {
-                    coded[i].number = 117;
-                }
-                else if (uncoded[i].character == 'v')
-                {
-                    coded[i].number = 118;
-                }
-                else if (uncoded[i].character == 'w')
-                {
-                    coded[i].number = 119;
-                }
-                else if (uncoded[i].character == 'x')
-                {
-                    coded[i].number = 120;
-                }
-                else if (uncoded[i].character == 'y')
-                {
-                    coded[i].number = 121;
-                }
-                else if (uncoded[i].character == 'z')
-                {
-                    coded[i].number = 122;
-                }
-                else
-                {
-                    coded[i].number = 35;
-                }
-
+                switch(uncoded[i].character)
+                {
+                    case ' ':
+                        coded[i].number = 32;
+                        break;
+                    case '!':
+                        coded[i].number = 33;
+                        break;
+                    case '%':
+                        coded[i].number = 37;
+                        break;
+                    case ')':
+                        coded[i].number = 41;
+                        break;
+                    case '(':
+                        coded[i].number = 40;
+                        break;
+                    case '+':
+                        coded[i].number = 43;
+                        break;
+                    case ',':
+                        coded[i].number = 44;
+                        break;
+                    case '-':
+                        coded[i].number = 45;
+                        break;
+                    case '.':
+                        coded[i].number = 46;
+                        break;
+                    case '/':
+                        coded[i].number = 47;
+                        break;
+                    case '0':
+                        coded[i].number = 48;
+                        break;
+                    case '1':
+                        coded[i].number = 49;
+                        break;
+                    case '2':
+                        coded[i].number = 50;
+                        break;
+                    case '3':
+                        coded[i].number = 51;
+                        break;
+                    case '4':
+                        coded[i].number = 52;
+                        break;
+                    case '5':
+                        coded[i].number = 53;
+                        break;
+                    case '6':
+                        coded[i].number = 54;
+                        break;
+                    case '7':
+                        coded[i].number = 55;
+                        break;
+                    case '8':
+                        coded[i].number = 56;
+                        break;
+                    case '9':
+                        coded[i].number = 57;
+                        break;
+                    case ':':
+                        coded[i].number = 58;
+                        break;
+                    case ';':
+                        coded[i].number = 59;
+                        break;
+                    case '<':
+                        coded[i].number = 60;
+                        break;
+                    case '=':
+                        coded[i].number = 61;
+                        break;
+                    case '>':
+                        coded[i].number = 62;
+                        break;
+                    case '?':
+                        coded[i].number = 63;
+                        break;
+                    case '@':
+                        coded[i].number = 64;
+                        break;
+                    case 'A': 
+                        coded[i].number = 65;
+                        break;
+                    case 'Á':
+                        coded[i].number = 65;
+                        break;
+                    case 'B':
+                        coded[i].number = 66;
+                        break;
+                    case 'C':
+                        coded[i].number = 67;
+                        break;
+                    case 'D':
+                        coded[i].number = 68;
+                        break;
+                    case 'E':
+                        coded[i].number = 69;
+                        break;
+                    case 'É':
+                        coded[i].number = 69;
+                        break;
+                    case 'F':
+                        coded[i].number = 70;
+                        break;
+                    case 'G':
+                        coded[i].number = 71;
+                        break;
+                    case 'H':
+                        coded[i].number = 72;
+                        break;
+                    case 'I':
+                        coded[i].number = 73;
+                        break;
+                    case 'J':
+                        coded[i].number = 74;
+                        break;
+                    case 'K':
+                        coded[i].number = 75;
+                        break;
+                    case 'L':
+                        coded[i].number = 76;
+                        break;
+                    case 'M':
+                        coded[i].number = 77;
+                        break;
+                    case 'N':
+                        coded[i].number = 78;
+                        break;
+                    case 'O':
+                        coded[i].number = 79;
+                        break;
+                    case 'Ó':
+                        coded[i].number = 79;
+                        break;
+                    case 'Ö':
+                        coded[i].number = 79;
+                        break;
+                    case 'Ő':
+                        coded[i].number = 79;
+                        break;
+                    case 'P':
+                        coded[i].number = 80;
+                        break;
+                    case 'Q':
+                        coded[i].number = 81;
+                        break;
+                    case 'R':
+                        coded[i].number = 82;
+                        break;
+                    case 'S':
+                        coded[i].number = 83;
+                        break;
+                    case 'T':
+                        coded[i].number = 84;
+                        break;
+                    case 'U':
+                        coded[i].number = 85;
+                        break;
+                    case 'Ú':
+                        coded[i].number = 85;
+                        break;
+                    case 'Ü':
+                        coded[i].number = 85;
+                        break;
+                    case 'Ű':
+                        coded[i].number = 85;
+                        break;
+                    case 'V':
+                        coded[i].number = 86;
+                        break;
+                    case 'W':
+                        coded[i].number = 87;
+                        break;
+                    case 'X':
+                        coded[i].number = 88;
+                        break;
+                    case 'Y':
+                        coded[i].number = 89;
+                        break;
+                    case 'Z':
+                        coded[i].number = 90;
+                        break;
+                    case 'a':
+                        coded[i].number = 97;
+                        break;
+                    case 'á':
+                        coded[i].number = 97;
+                        break;
+                    case 'b':
+                        coded[i].number = 98;
+                        break;
+                    case 'c':
+                        coded[i].number = 99;
+                        break;
+                    case 'd':
+                        coded[i].number = 100;
+                        break;
+                    case 'e':
+                        coded[i].number = 101;
+                        break;
+                    case 'é':
+                        coded[i].number = 101;
+                        break;
+                    case 'f':
+                        coded[i].number = 102;
+                        break;
+                    case 'g':
+                        coded[i].number = 103;
+                        break;
+                    case 'h':
+                        coded[i].number = 104;
+                        break;
+                    case 'i':
+                        coded[i].number = 105;
+                        break;
+                    case 'í':
+                        coded[i].number = 105;
+                        break;
+                    case 'j':
+                        coded[i].number = 106;
+                        break;
+                    case 'k':
+                        coded[i].number = 107;
+                        break;
+                    case 'l':
+                        coded[i].number = 108;
+                        break;
+                    case 'm':
+                        coded[i].number = 109;
+                        break;
+                    case 'n':
+                        coded[i].number = 110;
+                        break;
+                    case 'o':
+                        coded[i].number = 111;
+                        break;
+                    case 'ó':
+                        coded[i].number = 111;
+                        break;
+                    case 'ő':
+                        coded[i].number = 111;
+                        break;
+                    case 'ö':
+                        coded[i].number = 111;
+                        break;
+                    case 'p':
+                        coded[i].number = 112;
+                        break;
+                    case 'q':
+                        coded[i].number = 113;
+                        break;
+                    case 'r':
+                        coded[i].number = 114;
+                        break;
+                    case 's':
+                        coded[i].number = 115;
+                        break;
+                    case 't':
+                        coded[i].number = 116;
+                        break;
+                    case 'u':
+                        coded[i].number = 117;
+                        break;
+                    case 'ú':
+                        coded[i].number = 117;
+                        break;
+                    case 'ü':
+                        coded[i].number = 117;
+                        break;
+                    case 'ű':
+                        coded[i].number = 117;
+                        break;
+                    case 'v':
+                        coded[i].number = 118;
+                        break;
+                    case 'w':
+                        coded[i].number = 119;
+                        break;
+                    case 'x':
+                        coded[i].number = 120;
+                        break;
+                    case 'y':
+                        coded[i].number = 121;
+                        break;
+                    case 'z':
+                        coded[i].number = 122;
+                        break;
+                    default:
+                        coded[i].number = 35;
+                        break;
+                }
+                
                 int M = coded[i].number;
                 long C=1;
                 
