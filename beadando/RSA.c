@@ -23,15 +23,17 @@ typedef struct helper
 {
     char character;
     int i;
+    int number;
     int code;
+    char new;
 }helper;
 
 void Scanfile(data* uncoded);//szöveg beolvasása
 void EncodingText( data *uncoded,data2 *code);//szöveg kódolása
-data2 ParEncodingText( helper help);
+void ParEncodingText( helper *help);
 void CodedFileDump(data2 *coded);//kódolt szöveg kiírása egy fájlba
-data Decoding(data2 *coded);//dekódolás
-data ParDecoding(helper help);
+void Decoding(data2 *coded, data *uncoded);//dekódolás
+void ParDecoding(helper *help);
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
 void runtime_display(clock_t allsequencialtime, clock_t palltime, clock_t openmpalltime, clock_t encoding_time, clock_t pencoding_time, clock_t openmpencoding_time, clock_t decoding_time, clock_t pdecoding_time, clock_t openmpdecoding_time);     //futási idők kiírása egy fájlba
 
@@ -74,114 +76,142 @@ int main()
     uncoded.character=malloc(sizeof(char)*100000);
     uncoded.new=malloc(sizeof(char)*100000);
     Scanfile(&uncoded);
-    printf("Beolvas");
+    //printf("Beolvas");
     pthread_t threads[uncoded.n];
     pthread_t threadsomp[uncoded.n];
 
     encoding_time1=clock();
     struct data2 coded;
-    coded.code=malloc(sizeof(char)*100000);
-    coded.number=malloc(sizeof(char)*100000);
+    coded.code=malloc(sizeof(int)*100000);
+    coded.number=malloc(sizeof(int)*100000);
     EncodingText(&uncoded,&coded);
     encoding_time2=clock();
     encoding_time=encoding_time2-encoding_time1;
 
     CodedFileDump(&coded);
     
-    
+    //printf(" 91 ");
     decoding_time1=clock();
-    uncoded=Decoding(&coded);
+    Decoding(&coded,&uncoded);
+    //printf(" 94 ");
     decoding_time2=clock();
     decoding_time=decoding_time2-decoding_time1;
-
+    //printf(" 97 ");
     DecodedFileDump(&uncoded);
     end_time=clock();
     allsequencialtime=end_time-start_time;
-    for(i=0;i<uncoded.n;i++)
-    {
-        printf(" %c", uncoded.n);
-    }
+    printf(" end ");
     //párhuzamos rész !!!
     
     pstart_time=clock();
     struct data puncoded;
+    puncoded.character=malloc(sizeof(char)*100000);
+    puncoded.new=malloc(sizeof(char)*100000);
     struct data2 pcoded;
+    pcoded.code=malloc(sizeof(int)*100000);
+    pcoded.number=malloc(sizeof(int)*100000);
     pcoded.n=(puncoded.n);
     Scanfile(&puncoded);
     struct helper help;
-
+    //printf(" 113 ");
+    
     pencoding_time1=clock();
     for(i=0;i<puncoded.n;i++)
     {
         help.i=i;
         help.character=puncoded.character[i];
+        
         pthread_create(&threads[i],NULL,ParEncodingText,&help);
+        pcoded.number[i]=help.number;
+        pcoded.code[i]=help.code;
     }
     pencoding_time2=clock();
     pencoding_time=pencoding_time2-pencoding_time1;
-
+    //printf(" 128 ");
     CodedFileDump(&pcoded);
-
+    //printf(" 130 ");
     pdecoding_time1=clock();
     for(i=0;i<pcoded.n;i++)
     {
         help.i=i;
         help.code=pcoded.code[i];
+        
         pthread_create(&threads[i],NULL,ParDecoding,&help);
+        puncoded.new[i]=help.new;
     }
-    
+    //printf( " 138 ");
     pdecoding_time2=clock();
     pdecoding_time=pdecoding_time2-pdecoding_time1;
 
     DecodedFileDump(&puncoded);
     pend_time=clock();
     palltime=pend_time-pstart_time;
-
+    printf(" end ");
     //OPENMP rész !!!
 
     openmpstart_time=clock();
     struct data ouncoded;
+    ouncoded.character=malloc(sizeof(char)*100000);
+    ouncoded.new=malloc(sizeof(char)*100000);
     struct data2 ocoded;
+    ocoded.code=malloc(sizeof(int)*100000);
+    ocoded.number=malloc(sizeof(int)*100000);
     ocoded.n=(ouncoded.n);
     Scanfile(&puncoded);
 
     openmpencoding_time1=clock();
-        
-        #pragma omp parallel for
+    #pragma omp parallel
+    {
+        printf(" 166 ");
+        #pragma omp for
         for(j=0;j<ocoded.n;j++)
         {
             help.i=j;
             help.character=ouncoded.character[j];
-            ParEncodingText(help);
+            ParEncodingText(&help);
+            ocoded.number[i]=help.number;
+            ocoded.code[i]=help.code;
         }
+        printf(" 175 ");
+    }
     openmpencoding_time2=clock();
     openmpencoding_time=openmpencoding_time2-openmpencoding_time1;
-
+    printf(" 175 ");
     CodedFileDump(&ocoded);
-
+    printf(" 177 ");
     openmpdecoding_time1=clock();
     
-        j=0;
-        #pragma omp parallel for
-        for(j=0;j<ocoded.n;j++)
-        {
-            help.i=i;
-            help.code=pcoded.code[j];
-            ParDecoding(help);
-        }
+    #pragma omp parallel for
+    for(j=0;j<ocoded.n;j++)
+    {
+        help.i=i;
+        help.code=ocoded.code[j];
+        ParDecoding(&help);
+        ouncoded.new[i]=help.new;
+    }
+    
     openmpdecoding_time2=clock();
     openmpdecoding_time=openmpdecoding_time2-openmpdecoding_time1;
 
     DecodedFileDump(&ouncoded);
     openmpend_time=clock();
     openmpalltime=openmpend_time-openmpstart_time;
-
+    printf( "end" );
 
     free(uncoded.character);
     free(uncoded.new);
     free(coded.code);
     free(coded.number);
+    free(puncoded.character);
+    free(puncoded.new);
+    free(pcoded.code);
+    free(pcoded.number);
+    free(ouncoded.character);
+    free(ouncoded.new);
+    free(ocoded.code);
+    free(ocoded.number);
     runtime_display(allsequencialtime, palltime, openmpalltime, encoding_time, pencoding_time, openmpencoding_time, decoding_time, pdecoding_time, openmpdecoding_time);
+    printf(" end ");
     return 0;
 }
 
@@ -218,13 +248,13 @@ void Scanfile(data* uncoded)
         while((ch = fgetc(fp)) != EOF) 
         {
             
-            printf("i");
+            //printf("i");
             uncoded->character[i]=ch; 
-            printf("i");
+            //printf("i");
             i++;
-            printf("i");
+            //printf("i");
             size++; 
-            printf("i");
+            //printf("i");
             
         }
         if (size==0) 
@@ -575,7 +605,7 @@ void EncodingText( data *uncoded, data2* code)
     for(i=0;i<(code->n);i++)
     {
         int M=code->number[i];
-        int C;
+        long C=1;
 
         C=1%n;
         C=(M*C)%n;
@@ -584,344 +614,343 @@ void EncodingText( data *uncoded, data2* code)
         C=(M*C)%n;
         C=(C*C)%n;
         C=(M*C)%n;
-        code->code[i]=C;
+        code->code[i]=(int)C;
     }
-    printf("Encoding!");
+    //printf("Encoding!");
     return;
 }
 
-data2 ParEncodingText( helper help)
+void ParEncodingText( helper *help)
 {
-    struct data2 coded;
-    int p=1039;
+   int p=1039;
     int q=2617;
     int n=p*q;
     int e=11;
 
-    if(help.character == ' ')
+    if(help->character == ' ')
     {
-        coded.number[help.i]=32;
+        help->number=32;
     }
-    else if(help.character == '!')
+    else if(help->character == '!')
     {
-        coded.number[help.i]=33;
+        help->number=33;
     }
-    else if(help.character == '%')
+    else if(help->character == '%')
     {
-        coded.number[help.i]=37;
+        help->number=37;
     }
-    else if(help.character == '(')
+    else if(help->character == '(')
     {
-        coded.number[help.i]=40;
+        help->number=40;
     }
-    else if(help.character == ')')
+    else if(help->character == ')')
     {
-        coded.number[help.i]=41;
+        help->number=41;
     }
-    else if(help.character == '+')
+    else if(help->character == '+')
     {
-        coded.number[help.i]=43;
+        help->number=43;
     }
-    else if(help.character == ',')
+    else if(help->character == ',')
     {
-        coded.number[help.i]=44;
+        help->number=44;
     }
-    else if(help.character == '-')
+    else if(help->character == '-')
     {
-        coded.number[help.i]=45;
+        help->number=45;
     }
-    else if(help.character == '.')
+    else if(help->character == '.')
     {
-        coded.number[help.i]=46;
+        help->number=46;
     }
-    else if(help.character == '/')
+    else if(help->character == '/')
     {
-        coded.number[help.i]=47;
+        help->number=47;
     }
-    else if(help.character == '0')
+    else if(help->character == '0')
     {
-        coded.number[help.i]=48;
+        help->number=48;
     }
-    else if(help.character == '1')
+    else if(help->character == '1')
     {
-        coded.number[help.i]=49;
+        help->number=49;
     }
-    else if(help.character == '2')
+    else if(help->character == '2')
     {
-        coded.number[help.i]=50;
+        help->number=50;
     }
-    else if(help.character == '3')
+    else if(help->character == '3')
     {
-        coded.number[help.i]=51;
+        help->number=51;
     }
-    else if(help.character == '4')
+    else if(help->character == '4')
     {
-        coded.number[help.i]=52;
+        help->number=52;
     }
-    else if(help.character == '5')
+    else if(help->character == '5')
     {
-        coded.number[help.i]=53;
+        help->number=53;
     }
-    else if(help.character == '6')
+    else if(help->character == '6')
     {
-        coded.number[help.i]=54;
+        help->number=54;
     }
-    else if(help.character == '7')
+    else if(help->character == '7')
     {
-        coded.number[help.i]=55;
+        help->number=55;
     }
-    else if(help.character == '8')
+    else if(help->character == '8')
     {
-        coded.number[help.i]=56;
+        help->number=56;
     }
-    else if(help.character == '9')
+    else if(help->character == '9')
     {
-        coded.number[help.i]=57;
+        help->number=57;
     }
-    else if(help.character == ':')
+    else if(help->character == ':')
     {
-        coded.number[help.i]=58;
+        help->number=58;
     }
-    else if(help.character == ';')
+    else if(help->character == ';')
     {
-        coded.number[help.i]=59;
+        help->number=59;
     }
-    else if(help.character == '<')
+    else if(help->character == '<')
     {
-        coded.number[help.i]=60;
+        help->number=60;
     }
-    else if(help.character == '=')
+    else if(help->character == '=')
     {
-        coded.number[help.i]=61;
+        help->number=61;
     }
-    else if(help.character == '>')
+    else if(help->character == '>')
     {
-        coded.number[help.i]=62;
+        help->number=62;
     }
-    else if(help.character == '?')
+    else if(help->character == '?')
     {
-        coded.number[help.i]=63;
+        help->number=63;
     }
-    else if(help.character == '@')
+    else if(help->character == '@')
     {
-        coded.number[help.i]=64;
+        help->number=64;
     }
-    else if(help.character == 'A')
+    else if(help->character == 'A')
     {
-        coded.number[help.i]=65;
+        help->number=65;
     }
-    else if(help.character == 'B')
+    else if(help->character == 'B')
     {
-        coded.number[help.i]=66;
+        help->number=66;
     }
-    else if(help.character == 'C')
+    else if(help->character == 'C')
     {
-        coded.number[help.i]=67;
+        help->number=67;
     }
-    else if(help.character == 'D')
+    else if(help->character == 'D')
     {
-        coded.number[help.i]=68;
+        help->number=68;
     }
-    else if(help.character == 'E')
+    else if(help->character == 'E')
     {
-        coded.number[help.i]=69;
+        help->number=69;
     }
-    else if(help.character == 'F')
+    else if(help->character == 'F')
     {
-        coded.number[help.i]=70;
+        help->number=70;
     }
-    else if(help.character == 'G')
+    else if(help->character == 'G')
     {
-        coded.number[help.i]=71;
+        help->number=71;
     }
-    else if(help.character == 'H')
+    else if(help->character == 'H')
     {
-        coded.number[help.i]=72;
+        help->number=72;
     }
-    else if(help.character == 'I')
+    else if(help->character == 'I')
     {
-        coded.number[help.i]=73;
+        help->number=73;
     }
-    else if(help.character == 'J')
+    else if(help->character == 'J')
     {
-        coded.number[help.i]=74;
+        help->number=74;
     }
-    else if(help.character == 'K')
+    else if(help->character == 'K')
     {
-        coded.number[help.i]=75;
+        help->number=75;
     }
-    else if(help.character == 'L')
+    else if(help->character == 'L')
     {
-        coded.number[help.i]=76;
+        help->number=76;
     }
-    else if(help.character == 'M')
+    else if(help->character == 'M')
     {
-        coded.number[help.i]=77;
+        help->number=77;
     }
-    else if(help.character == 'N')
+    else if(help->character == 'N')
     {
-        coded.number[help.i]=78;
+        help->number=78;
     }
-    else if(help.character == 'O')
+    else if(help->character == 'O')
     {
-        coded.number[help.i]=79;
+        help->number=79;
     }
-    else if(help.character == 'P')
+    else if(help->character == 'P')
     {
-        coded.number[help.i]=80;
+        help->number=80;
     }
-    else if(help.character == 'Q')
+    else if(help->character == 'Q')
     {
-        coded.number[help.i]=81;
+        help->number=81;
     }
-    else if(help.character == 'R')
+    else if(help->character == 'R')
     {
-        coded.number[help.i]=82;
+        help->number=82;
     }
-    else if(help.character == 'S')
+    else if(help->character == 'S')
     {
-        coded.number[help.i]=83;
+        help->number=83;
     }
-    else if(help.character == 'T')
+    else if(help->character == 'T')
     {
-        coded.number[help.i]=84;
+        help->number=84;
     }
-    else if(help.character == 'U')
+    else if(help->character == 'U')
     {
-        coded.number[help.i]=85;
+        help->number=85;
     }
-    else if(help.character == 'V')
+    else if(help->character == 'V')
     {
-        coded.number[help.i]=86;
+        help->number=86;
     }
-    else if(help.character == 'W')
+    else if(help->character == 'W')
     {
-        coded.number[help.i]=87;
+        help->number=87;
     }
-    else if(help.character == 'X')
+    else if(help->character == 'X')
     {
-        coded.number[help.i]=88;
+        help->number=88;
     }
-    else if(help.character == 'Y')
+    else if(help->character == 'Y')
     {
-        coded.number[help.i]=89;
+        help->number=89;
     }
-    else if(help.character == 'Z')
+    else if(help->character == 'Z')
     {
-        coded.number[help.i]=90;
+        help->number=90;
     }
-    else if(help.character == 'a')
+    else if(help->character == 'a')
     {
-        coded.number[help.i]=97;
+        help->number=97;
     }
-    else if(help.character == 'b')
+    else if(help->character == 'b')
     {
-        coded.number[help.i]=98;
+        help->number=98;
     }
-    else if(help.character == 'c')
+    else if(help->character == 'c')
     {
-        coded.number[help.i]=99;
+        help->number=99;
     }
-    else if(help.character == 'd')
+    else if(help->character == 'd')
     {
-        coded.number[help.i]=100;
+        help->number=100;
     }
-    else if(help.character == 'e')
+    else if(help->character == 'e')
     {
-        coded.number[help.i]=101;
+        help->number=101;
     }
-    else if(help.character == 'f')
+    else if(help->character == 'f')
     {
-        coded.number[help.i]=102;
+        help->number=102;
     }
-    else if(help.character == 'g')
+    else if(help->character == 'g')
     {
-        coded.number[help.i]=103;
+        help->number=103;
     }
-    else if(help.character == 'h')
+    else if(help->character == 'h')
     {
-        coded.number[help.i]=104;
+        help->number=104;
     }
-    else if(help.character == 'i')
+    else if(help->character == 'i')
     {
-        coded.number[help.i]=105;
+        help->number=105;
     }
-    else if(help.character == 'j')
+    else if(help->character == 'j')
     {
-        coded.number[help.i]=106;
+        help->number=106;
     }
-    else if(help.character == 'k')
+    else if(help->character == 'k')
     {
-        coded.number[help.i]=107;
+        help->number=107;
     }
-    else if(help.character == 'l')
+    else if(help->character == 'l')
     {
-        coded.number[help.i]=108;
+        help->number=108;
     }
-    else if(help.character = 'm')
+    else if(help->character = 'm')
     {
-        coded.number[help.i]=109;
+        help->number=109;
     }
-    else if(help.character == 'n')
+    else if(help->character == 'n')
     {
-        coded.number[help.i]=110;
+        help->number=110;
     }
-    else if(help.character == 'o')
+    else if(help->character == 'o')
     {
-        coded.number[help.i]=111;
+        help->number=111;
     }
-    else if(help.character == 'p')
+    else if(help->character == 'p')
     {
-        coded.number[help.i]=112;
+        help->number=112;
     }
-    else if(help.character == 'q')
+    else if(help->character == 'q')
     {
-        coded.number[help.i]=113;
+        help->number=113;
     }
-    else if(help.character == 'r')
+    else if(help->character == 'r')
     {
-        coded.number[help.i]=114;
+        help->number=114;
     }
-    else if(help.character == 's')
+    else if(help->character == 's')
     {
-        coded.number[help.i]=115;
+        help->number=115;
     }
-    else if(help.character == 't')
+    else if(help->character == 't')
     {
-        coded.number[help.i]=116;
+        help->number=116;
     }
-    else if(help.character == 'u')
+    else if(help->character == 'u')
     {
-        coded.number[help.i]=117;
+        help->number=117;
     }
-    else if(help.character == 'v')
+    else if(help->character == 'v')
     {
-        coded.number[help.i]=118;
+        help->number=118;
     }
-    else if(help.character == 'w')
+    else if(help->character == 'w')
     {
-        coded.number[help.i]=119;
+        help->number=119;
     }
-    else if(help.character == 'x')
+    else if(help->character == 'x')
     {
-        coded.number[help.i]=120;
+        help->number=120;
     }
-    else if(help.character == 'y')
+    else if(help->character == 'y')
     {
-        coded.number[help.i]=121;
+        help->number=121;
     }
-    else if(help.character == 'z')
+    else if(help->character == 'z')
     {
-        coded.number[help.i]=122;
+        help->number=122;
     }
     else
     {
-         coded.number[help.i]=35;
+         help->number=35;
     }
     //titkosítás rész !!!
     
-    int M=coded.number[help.i];
-    int C;
+    int M=help->number;
+    long C=1;
 
     C=1%n;
     C=(M*C)%n;
@@ -930,17 +959,18 @@ data2 ParEncodingText( helper help)
     C=(M*C)%n;
     C=(C*C)%n;
     C=(M*C)%n;
-    coded.code[help.i]=C;
-    printf("ParEncoding!");
-    return coded;
+    help->code=(int)C;
+    //printf("ParEncoding!");
+    return;
 }
 
 void CodedFileDump(data2 *coded)
 {
     FILE *fp;
     int i;
-
+    //printf(" 951 ");
     fp=fopen("coded_text.txt","a");
+    //printf(" 953 ");
     if(fp==NULL)
     {
         printf("\nSikertelen fájl megnyitás");
@@ -950,15 +980,16 @@ void CodedFileDump(data2 *coded)
         fprintf(fp,"\n");
         for(i=0;i<coded->n;i++)
         {
+            //printf(" j ");
             fprintf(fp, "%d ", coded->code[i]);
         }
         fclose(fp);
     }
-    printf("codedf");
+    //printf("codedf");
     return;
 }
 
-data Decoding(data2 *coded)
+void Decoding(data2 *coded, data *uncoded)
 {
     int i;
     int p=1039;
@@ -966,11 +997,10 @@ data Decoding(data2 *coded)
     int n=p*q;
     int e=11;
     int d=((7*(p-1)*(q-1))+1)/e;  //1727987
-    struct data uncoded;
 
     for(i=1;i<coded->n;i++)
     {
-        int C;
+        long C;
         int bin=0;
         C=1%n;  //1
         C=(coded->code[i]*C)%n;
@@ -1009,696 +1039,695 @@ data Decoding(data2 *coded)
         C=(coded->code[i]*C)%n;
         if(C == 32)
         {
-            uncoded.new[i]=' ';
+            uncoded->new[i]=' ';
         }
         else if(C == 33)
         {
-            uncoded.new[i]='!';
+            uncoded->new[i]='!';
         }
         else if(C == 35)
         {
-            uncoded.new[i]='%';
+            uncoded->new[i]='%';
         }
         else if(C == 40)
         {
-            uncoded.new[i]='(';
+            uncoded->new[i]='(';
         }
         else if(C == 41)
         {
-            uncoded.new[i]=')';
+            uncoded->new[i]=')';
         }
         else if(C == 43)
         {
-            uncoded.new[i]='+';
+            uncoded->new[i]='+';
         }
         else if(C == 44)
         {
-            uncoded.new[i]=',';
+            uncoded->new[i]=',';
         }
         else if(C == 45)
         {
-            uncoded.new[i]='-';
+            uncoded->new[i]='-';
         }
         else if(C == 46)
         {
-            uncoded.new[i]='.';
+            uncoded->new[i]='.';
         }
         else if(C == 47)
         {
-            uncoded.new[i]='/';
+            uncoded->new[i]='/';
         }
         else if(C == 48)
         {
-            uncoded.new[i]='0';
+            uncoded->new[i]='0';
         }
         else if(C == 49)
         {
-            uncoded.new[i]='1';
+            uncoded->new[i]='1';
         }
         else if(C == 50)
         {
-            uncoded.new[i]='2';
+            uncoded->new[i]='2';
         }
         else if(C == 51)
         {
-            uncoded.new[i]='3';
+            uncoded->new[i]='3';
         }
         else if(C == 52)
         {
-            uncoded.new[i]='4';
+            uncoded->new[i]='4';
         }
         else if(C == 53)
         {
-            uncoded.new[i]='5';
+            uncoded->new[i]='5';
         }
         else if(C == 54)
         {
-            uncoded.new[i]='6';
+            uncoded->new[i]='6';
         }
         else if(C == 55)
         {
-            uncoded.new[i]='7';
+            uncoded->new[i]='7';
         }
         else if(C == 56)
         {
-            uncoded.new[i]='8';
+            uncoded->new[i]='8';
         }
         else if(C == 57)
         {
-            uncoded.new[i]='9';
+            uncoded->new[i]='9';
         }
         else if(C == 58)
         {
-            uncoded.new[i]=':';
+            uncoded->new[i]=':';
         }
         else if(C == 59)
         {
-            uncoded.new[i]=';';
+            uncoded->new[i]=';';
         }
         else if(C == 60)
         {
-            uncoded.new[i]='<';
+            uncoded->new[i]='<';
         }
         else if(C == 61)
         {
-            uncoded.new[i]='=';
+            uncoded->new[i]='=';
         }
         else if(C == 62)
         {
-            uncoded.new[i]='>';
+            uncoded->new[i]='>';
         }
         else if(C == 63)
         {
-            uncoded.new[i]='?';
+            uncoded->new[i]='?';
         }
         else if(C == 64)
         {
-            uncoded.new[i]='@';
+            uncoded->new[i]='@';
         }
         else if(C == 65)
         {
-            uncoded.new[i]='A';
+            uncoded->new[i]='A';
         }
         else if(C == 66)
         {
-            uncoded.new[i]='B';
+            uncoded->new[i]='B';
         }
         else if(C == 67)
         {
-            uncoded.new[i]='C';
+            uncoded->new[i]='C';
         }
         else if(C == 68)
         {
-            uncoded.new[i]='D';
+            uncoded->new[i]='D';
         }
         else if(C == 69)
         {
-            uncoded.new[i]='E';
+            uncoded->new[i]='E';
         }
         else if(C == 70)
         {
-            uncoded.new[i]='F';
+            uncoded->new[i]='F';
         }
         else if(C == 71)
         {
-            uncoded.new[i]='G';
+            uncoded->new[i]='G';
         }
         else if(C == 72)
         {
-            uncoded.new[i]='H';
+            uncoded->new[i]='H';
         }
         else if(C == 73)
         {
-            uncoded.new[i]='I';
+            uncoded->new[i]='I';
         }
         else if(C == 74)
         {
-            uncoded.new[i]='J';
+            uncoded->new[i]='J';
         }
         else if(C == 75)
         {
-            uncoded.new[i]='K';
+            uncoded->new[i]='K';
         }
         else if(C == 76)
         {
-            uncoded.new[i]='L';
+            uncoded->new[i]='L';
         }
         else if(C == 77)
         {
-            uncoded.new[i]='M';
+            uncoded->new[i]='M';
         }
         else if(C == 78)
         {
-            uncoded.new[i]='N';
+            uncoded->new[i]='N';
         }
         else if(C == 79)
         {
-            uncoded.new[i]='O';
+            uncoded->new[i]='O';
         }
         else if(C == 80)
         {
-            uncoded.new[i]='P';
+            uncoded->new[i]='P';
         }
         else if(C == 81)
         {
-            uncoded.new[i]='Q';
+            uncoded->new[i]='Q';
         }
         else if(C == 82)
         {
-            uncoded.new[i]='R';
+            uncoded->new[i]='R';
         }
         else if(C == 83)
         {
-            uncoded.new[i]='S';
+            uncoded->new[i]='S';
         }
         else if(C == 84)
         {
-            uncoded.new[i]='T';
+            uncoded->new[i]='T';
         }
         else if(C == 85)
         {
-            uncoded.new[i]='U';
+            uncoded->new[i]='U';
         }
         else if(C == 86)
         {
-            uncoded.new[i]='V';
+            uncoded->new[i]='V';
         }
         else if(C == 87)
         {
-            uncoded.new[i]='W';
+            uncoded->new[i]='W';
         }
         else if(C == 88)
         {
-            uncoded.new[i]='X';
+            uncoded->new[i]='X';
         }
         else if(C == 89)
         {
-            uncoded.new[i]='Y';
+            uncoded->new[i]='Y';
         }
         else if(C == 90)
         {
-            uncoded.new[i]='Z';
+            uncoded->new[i]='Z';
         }
         else if(C == 97)
         {
-            uncoded.new[i]='a';
+            uncoded->new[i]='a';
         }
         else if(C == 98)
         {
-            uncoded.new[i]='b';
+            uncoded->new[i]='b';
         }
         else if(C == 99)
         {
-            uncoded.new[i]='c';
+            uncoded->new[i]='c';
         }
         else if(C == 100)
         {
-            uncoded.new[i]='d';
+            uncoded->new[i]='d';
         }
         else if(C == 101)
         {
-            uncoded.new[i]='e';
+            uncoded->new[i]='e';
         }
         else if(C == 102)
         {
-            uncoded.new[i]='f';
+            uncoded->new[i]='f';
         }
         else if(C == 103)
         {
-            uncoded.new[i]='g';
+            uncoded->new[i]='g';
         }
         else if(C == 104)
         {
-            uncoded.new[i]='h';
+            uncoded->new[i]='h';
         }
         else if(C == 105)
         {
-            uncoded.new[i]='i';
+            uncoded->new[i]='i';
         }
         else if(C == 106)
         {
-            uncoded.new[i]='j';
+            uncoded->new[i]='j';
         }
         else if(C == 107)
         {
-            uncoded.new[i]='k';
+            uncoded->new[i]='k';
         }
         else if(C == 108)
         {
-            uncoded.new[i]='l';
+            uncoded->new[i]='l';
         }
         else if(C == 109)
         {
-            uncoded.new[i]='m';
+            uncoded->new[i]='m';
         }
         else if(C == 110)
         {
-            uncoded.new[i]='n';
+            uncoded->new[i]='n';
         }
         else if(C == 111)
         {
-            uncoded.new[i]='o';
+            uncoded->new[i]='o';
         }
         else if(C == 112)
         {
-            uncoded.new[i]='p';
+            uncoded->new[i]='p';
         }
         else if(C == 113)
         {
-            uncoded.new[i]='q';
+            uncoded->new[i]='q';
         }
         else if(C == 114)
         {
-            uncoded.new[i]='r';
+            uncoded->new[i]='r';
         }
         else if(C == 115)
         {
-            uncoded.new[i]='s';
+            uncoded->new[i]='s';
         }
         else if(C == 116)
         {
-            uncoded.new[i]='t';
+            uncoded->new[i]='t';
         }
         else if(C == 117)
         {
-            uncoded.new[i]='u';
+            uncoded->new[i]='u';
         }
         else if(C == 118)
         {
-            uncoded.new[i]='v';
+            uncoded->new[i]='v';
         }
         else if(C == 119)
         {
-            uncoded.new[i]='w';
+            uncoded->new[i]='w';
         }
         else if(C == 120)
         {
-            uncoded.new[i]='x';
+            uncoded->new[i]='x';
         }
         else if(C == 121)
         {
-            uncoded.new[i]='y';
+            uncoded->new[i]='y';
         }
         else if(C == 122)
         {
-            uncoded.new[i]='z';
+            uncoded->new[i]='z';
         }
         else
         {
-            uncoded.new[i]='#';
+            uncoded->new[i]='#';
         }
     }
-    printf("Decoding!");
-    return uncoded;
+    //printf("Decoding!");
+    return;
 }
 
-data ParDecoding(helper help)
+void ParDecoding(helper *help)
 {
     int p=1039;
     int q=2617;
     int n=p*q;
     int e=11;
     int d=((7*(p-1)*(q-1))+1)/e;  //1727987
-    struct data uncoded;
 
-    int C;
+    long C=1;
     C=1%n;  //1
-    C=(help.code*C)%n;
+    C=(help->code*C)%n;
     C=(C*C)%n; //1
-    C=(help.code*C)%n;
+    C=(help->code*C)%n;
     C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //0
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
-    C=(C*C)%n; //1
-    C=(help.code*C)%n;
+    C=(help->code*C)%n;
     C=(C*C)%n; //0
     C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help.code*C)%n;
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
     C=(C*C)%n; //1
-    C=(help.code*C)%n;
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //0
+    C=(C*C)%n; //0
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
+    C=(C*C)%n; //1
+    C=(help->code*C)%n;
 
     if(C == 32)
     {
-        uncoded.new[help.i]=' ';
+        help->new=' ';
     }
     else if(C == 33)
     {
-        uncoded.new[help.i]='!';
+        help->new='!';
     }
     else if(C == 35)
     {
-        uncoded.new[help.i]='%';
+        help->new='%';
     }
     else if(C == 40)
     {
-        uncoded.new[help.i]='(';
+        help->new='(';
     }
     else if(C == 41)
     {
-        uncoded.new[help.i]=')';
+        help->new=')';
     }
     else if(C == 43)
     {
-        uncoded.new[help.i]='+';
+        help->new='+';
     }
     else if(C == 44)
     {
-        uncoded.new[help.i]=',';
+        help->new=',';
     }
     else if(C == 45)
     {
-        uncoded.new[help.i]='-';
+        help->new='-';
     }
     else if(C == 46)
     {
-        uncoded.new[help.i]='.';
+        help->new='.';
     }
     else if(C == 47)
     {
-        uncoded.new[help.i]='/';
+        help->new='/';
     }
     else if(C == 48)
     {
-        uncoded.new[help.i]='0';
+        help->new='0';
     }
     else if(C == 49)
     {
-        uncoded.new[help.i]='1';
+        help->new='1';
     }
     else if(C == 50)
     {
-        uncoded.new[help.i]='2';
+        help->new='2';
     }
     else if(C == 51)
     {
-        uncoded.new[help.i]='3';
+        help->new='3';
     }
     else if(C == 52)
     {
-        uncoded.new[help.i]='4';
+        help->new='4';
     }
     else if(C == 53)
     {
-        uncoded.new[help.i]='5';
+        help->new='5';
     }
     else if(C == 54)
     {
-        uncoded.new[help.i]='6';
+        help->new='6';
     }
     else if(C == 55)
     {
-        uncoded.new[help.i]='7';
+        help->new='7';
     }
     else if(C == 56)
     {
-        uncoded.new[help.i]='8';
+        help->new='8';
     }
     else if(C == 57)
     {
-        uncoded.new[help.i]='9';
+        help->new='9';
     }
     else if(C == 58)
     {
-        uncoded.new[help.i]=':';
+        help->new=':';
     }
     else if(C == 59)
     {
-        uncoded.new[help.i]=';';
+        help->new=';';
     }
     else if(C == 60)
     {
-        uncoded.new[help.i]='<';
+        help->new='<';
     }
     else if(C == 61)
     {
-        uncoded.new[help.i]='=';
+        help->new='=';
     }
     else if(C == 62)
     {
-        uncoded.new[help.i]='>';
+        help->new='>';
     }
     else if(C == 63)
     {
-        uncoded.new[help.i]='?';
+        help->new='?';
     }
     else if(C == 64)
     {
-        uncoded.new[help.i]='@';
+        help->new='@';
     }
     else if(C == 65)
     {
-        uncoded.new[help.i]='A';
+        help->new='A';
     }
     else if(C == 66)
     {
-        uncoded.new[help.i]='B';
+        help->new='B';
     }
     else if(C == 67)
     {
-        uncoded.new[help.i]='C';
+        help->new='C';
     }
     else if(C == 68)
     {
-        uncoded.new[help.i]='D';
+        help->new='D';
     }
     else if(C == 69)
     {
-        uncoded.new[help.i]='E';
+        help->new='E';
     }
     else if(C == 70)
     {
-        uncoded.new[help.i]='F';
+        help->new='F';
     }
     else if(C == 71)
     {
-        uncoded.new[help.i]='G';
+        help->new='G';
     }
     else if(C == 72)
     {
-        uncoded.new[help.i]='H';
+        help->new='H';
     }
     else if(C == 73)
     {
-        uncoded.new[help.i]='I';
+        help->new='I';
     }
     else if(C == 74)
     {
-        uncoded.new[help.i]='J';
+        help->new='J';
     }
     else if(C == 75)
     {
-        uncoded.new[help.i]='K';
+        help->new='K';
     }
     else if(C == 76)
     {
-        uncoded.new[help.i]='L';
+        help->new='L';
     }
     else if(C == 77)
     {
-        uncoded.new[help.i]='M';
+        help->new='M';
     }
     else if(C == 78)
     {
-        uncoded.new[help.i]='N';
+        help->new='N';
     }
     else if(C == 79)
     {
-        uncoded.new[help.i]='O';
+        help->new='O';
     }
     else if(C == 80)
     {
-        uncoded.new[help.i]='P';
+        help->new='P';
     }
     else if(C == 81)
     {
-        uncoded.new[help.i]='Q';
+        help->new='Q';
     }
     else if(C == 82)
     {
-        uncoded.new[help.i]='R';
+        help->new='R';
     }
     else if(C == 83)
     {
-        uncoded.new[help.i]='S';
+        help->new='S';
     }
     else if(C == 84)
     {
-        uncoded.new[help.i]='T';
+        help->new='T';
     }
     else if(C == 85)
     {
-        uncoded.new[help.i]='U';
+        help->new='U';
     }
     else if(C == 86)
     {
-        uncoded.new[help.i]='V';
+        help->new='V';
     }
     else if(C == 87)
     {
-        uncoded.new[help.i]='W';
+        help->new='W';
     }
     else if(C == 88)
     {
-        uncoded.new[help.i]='X';
+        help->new='X';
     }
     else if(C == 89)
     {
-        uncoded.new[help.i]='Y';
+        help->new='Y';
     }
     else if(C == 90)
     {
-        uncoded.new[help.i]='Z';
+        help->new='Z';
     }
     else if(C == 97)
     {
-        uncoded.new[help.i]='a';
+        help->new='a';
     }
     else if(C == 98)
     {
-        uncoded.new[help.i]='b';
+        help->new='b';
     }
     else if(C == 99)
     {
-        uncoded.new[help.i]='c';
+        help->new='c';
     }
     else if(C == 100)
     {
-        uncoded.new[help.i]='d';
+        help->new='d';
     }
     else if(C == 101)
     {
-        uncoded.new[help.i]='e';
+        help->new='e';
     }
     else if(C == 102)
     {
-        uncoded.new[help.i]='f';
+        help->new='f';
     }
     else if(C == 103)
     {
-        uncoded.new[help.i]='g';
+        help->new='g';
     }
     else if(C == 104)
     {
-        uncoded.new[help.i]='h';
+        help->new='h';
     }
     else if(C == 105)
     {
-        uncoded.new[help.i]='i';
+        help->new='i';
     }
     else if(C == 106)
     {
-        uncoded.new[help.i]='j';
+        help->new='j';
     }
     else if(C == 107)
     {
-        uncoded.new[help.i]='k';
+        help->new='k';
     }
     else if(C == 108)
     {
-        uncoded.new[help.i]='l';
+        help->new='l';
     }
     else if(C == 109)
     {
-        uncoded.new[help.i]='m';
+        help->new='m';
     }
     else if(C == 110)
     {
-        uncoded.new[help.i]='n';
+        help->new='n';
     }
     else if(C == 111)
     {
-        uncoded.new[help.i]='o';
+        help->new='o';
     }
     else if(C == 112)
     {
-        uncoded.new[help.i]='p';
+        help->new='p';
     }
     else if(C == 113)
     {
-        uncoded.new[help.i]='q';
+        help->new='q';
     }
     else if(C == 114)
     {
-        uncoded.new[help.i]='r';
+        help->new='r';
     }
     else if(C == 115)
     {
-        uncoded.new[help.i]='s';
+        help->new='s';
     }
     else if(C == 116)
     {
-        uncoded.new[help.i]='t';
+        help->new='t';
     }
     else if(C == 117)
     {
-        uncoded.new[help.i]='u';
+        help->new='u';
     }
     else if(C == 118)
     {
-        uncoded.new[help.i]='v';
+        help->new='v';
     }
     else if(C == 119)
     {
-        uncoded.new[help.i]='w';
+        help->new='w';
     }
     else if(C == 120)
     {
-        uncoded.new[help.i]='x';
+        help->new='x';
     }
     else if(C == 121)
     {
-        uncoded.new[help.i]='y';
+        help->new='y';
     }
     else if(C == 122)
     {
-        uncoded.new[help.i]='z';
+        help->new='z';
     }
     else
     {
-        uncoded.new[help.i]='#';
+        help->new='#';
     }
-    return uncoded;
+    return;
 }
 
 void DecodedFileDump(data *uncoded)
@@ -1719,6 +1748,6 @@ void DecodedFileDump(data *uncoded)
         }
         fclose(fp);
     }
-    printf("decode");
+    //printf("decode");
     return;
 }
