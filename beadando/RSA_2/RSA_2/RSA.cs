@@ -450,325 +450,248 @@ namespace RSA_2
                 C = (C * C) % n; //1
                 C = (coded[i].code * C) % n;
 
-                if (C == 32)
-                {
-                    uncoded[i].new_character = ' ';
-                }
-                else if (C == 33)
-                {
-                    uncoded[i].new_character = '!';
-                }
-                else if (C == 35)
-                {
-                    uncoded[i].new_character = '%';
-                }
-                else if (C == 40)
-                {
-                    uncoded[i].new_character = '(';
-                }
-                else if (C == 41)
-                {
-                    uncoded[i].new_character = ')';
-                }
-                else if (C == 43)
-                {
-                    uncoded[i].new_character = '+';
-                }
-                else if (C == 44)
-                {
-                    uncoded[i].new_character = ',';
-                }
-                else if (C == 45)
-                {
-                    uncoded[i].new_character = '-';
-                }
-                else if (C == 46)
-                {
-                    uncoded[i].new_character = '.';
-                }
-                else if (C == 47)
-                {
-                    uncoded[i].new_character = '/';
-                }
-                else if (C == 48)
-                {
-                    uncoded[i].new_character = '0';
-                }
-                else if (C == 49)
-                {
-                    uncoded[i].new_character = '1';
-                }
-                else if (C == 50)
-                {
-                    uncoded[i].new_character = '2';
-                }
-                else if (C == 51)
-                {
-                    uncoded[i].new_character = '3';
-                }
-                else if (C == 52)
-                {
-                    uncoded[i].new_character = '4';
-                }
-                else if (C == 53)
-                {
-                    uncoded[i].new_character = '5';
-                }
-                else if (C == 54)
-                {
-                    uncoded[i].new_character = '6';
-                }
-                else if (C == 55)
-                {
-                    uncoded[i].new_character = '7';
-                }
-                else if (C == 56)
-                {
-                    uncoded[i].new_character = '8';
-                }
-                else if (C == 57)
-                {
-                    uncoded[i].new_character = '9';
-                }
-                else if (C == 58)
-                {
-                    uncoded[i].new_character = ':';
-                }
-                else if (C == 59)
-                {
-                    uncoded[i].new_character = ';';
-                }
-                else if (C == 60)
-                {
-                    uncoded[i].new_character = '<';
-                }
-                else if (C == 61)
-                {
-                    uncoded[i].new_character = '=';
-                }
-                else if (C == 62)
-                {
-                    uncoded[i].new_character = '>';
-                }
-                else if (C == 63)
-                {
-                    uncoded[i].new_character = '?';
-                }
-                else if (C == 64)
-                {
-                    uncoded[i].new_character = '@';
-                }
-                else if (C == 65)
-                {
-                    uncoded[i].new_character = 'A';
-                }
-                else if (C == 66)
-                {
-                    uncoded[i].new_character = 'B';
-                }
-                else if (C == 67)
-                {
-                    uncoded[i].new_character = 'C';
-                }
-                else if (C == 68)
-                {
-                    uncoded[i].new_character = 'D';
-                }
-                else if (C == 69)
-                {
-                    uncoded[i].new_character = 'E';
-                }
-                else if (C == 70)
-                {
-                    uncoded[i].new_character = 'F';
-                }
-                else if (C == 71)
-                {
-                    uncoded[i].new_character = 'G';
-                }
-                else if (C == 72)
-                {
-                    uncoded[i].new_character = 'H';
-                }
-                else if (C == 73)
-                {
-                    uncoded[i].new_character = 'I';
-                }
-                else if (C == 74)
-                {
-                    uncoded[i].new_character = 'J';
-                }
-                else if (C == 75)
-                {
-                    uncoded[i].new_character = 'K';
-                }
-                else if (C == 76)
-                {
-                    uncoded[i].new_character = 'L';
-                }
-                else if (C == 77)
-                {
-                    uncoded[i].new_character = 'M';
-                }
-                else if (C == 78)
-                {
-                    uncoded[i].new_character = 'N';
-                }
-                else if (C == 79)
-                {
-                    uncoded[i].new_character = 'O';
-                }
-                else if (C == 80)
-                {
-                    uncoded[i].new_character = 'P';
-                }
-                else if (C == 81)
-                {
-                    uncoded[i].new_character = 'Q';
-                }
-                else if (C == 82)
-                {
-                    uncoded[i].new_character = 'R';
-                }
-                else if (C == 83)
-                {
-                    uncoded[i].new_character = 'S';
-                }
-                else if (C == 84)
-                {
-                    uncoded[i].new_character = 'T';
-                }
-                else if (C == 85)
-                {
-                    uncoded[i].new_character = 'U';
-                }
-                else if (C == 86)
-                {
-                    uncoded[i].new_character = 'V';
-                }
-                else if (C == 87)
-                {
-                    uncoded[i].new_character = 'W';
-                }
-                else if (C == 88)
-                {
-                    uncoded[i].new_character = 'X';
-                }
-                else if (C == 89)
-                {
-                    uncoded[i].new_character = 'Y';
-                }
-                else if (C == 90)
-                {
-                    uncoded[i].new_character = 'Z';
-                }
-                else if (C == 97)
-                {
-                    uncoded[i].new_character = 'a';
-                }
-                else if (C == 98)
-                {
-                    uncoded[i].new_character = 'b';
-                }
-                else if (C == 99)
-                {
-                    uncoded[i].new_character = 'c';
-                }
-                else if (C == 100)
-                {
-                    uncoded[i].new_character = 'd';
-                }
-                else if (C == 101)
-                {
-                    uncoded[i].new_character = 'e';
-                }
-                else if (C == 102)
-                {
-                    uncoded[i].new_character = 'f';
-                }
-                else if (C == 103)
-                {
-                    uncoded[i].new_character = 'g';
-                }
-                else if (C == 104)
-                {
-                    uncoded[i].new_character = 'h';
-                }
-                else if (C == 105)
-                {
-                    uncoded[i].new_character = 'i';
-                }
-                else if (C == 106)
-                {
-                    uncoded[i].new_character = 'j';
-                }
-                else if (C == 107)
-                {
-                    uncoded[i].new_character = 'k';
-                }
-                else if (C == 108)
-                {
-                    uncoded[i].new_character = 'l';
-                }
-                else if (C == 109)
-                {
-                    uncoded[i].new_character = 'm';
-                }
-                else if (C == 110)
-                {
-                    uncoded[i].new_character = 'n';
-                }
-                else if (C == 111)
-                {
-                    uncoded[i].new_character = 'o';
-                }
-                else if (C == 112)
-                {
-                    uncoded[i].new_character = 'p';
-                }
-                else if (C == 113)
-                {
-                    uncoded[i].new_character = 'q';
-                }
-                else if (C == 114)
-                {
-                    uncoded[i].new_character = 'r';
-                }
-                else if (C == 115)
-                {
-                    uncoded[i].new_character = 's';
-                }
-                else if (C == 116)
-                {
-                    uncoded[i].new_character = 't';
-                }
-                else if (C == 117)
-                {
-                    uncoded[i].new_character = 'u';
-                }
-                else if (C == 118)
-                {
-                    uncoded[i].new_character = 'v';
-                }
-                else if (C == 119)
-                {
-                    uncoded[i].new_character = 'w';
-                }
-                else if (C == 120)
-                {
-                    uncoded[i].new_character = 'x';
-                }
-                else if (C == 121)
-                {
-                    uncoded[i].new_character = 'y';
-                }
-                else if (C == 122)
-                {
-                    uncoded[i].new_character = 'z';
-                }
-                else
-                {
-                    uncoded[i].new_character = '#';
+                switch (C)
+                {
+                    case 32:
+                        uncoded[i].new_character = ' ';
+                        break;
+                    case 33:
+                        uncoded[i].new_character = '!';
+                        break;
+                    case 35:
+                        uncoded[i].new_character = '%';
+                        break;
+                    case 40:
+                        uncoded[i].new_character = '(';
+                        break;
+                    case 41:
+                        uncoded[i].new_character = ')';
+                        break;
+                    case 43:
+                        uncoded[i].new_character = '+';
+                        break;
+                    case 44:
+                        uncoded[i].new_character = ',';
+                        break;
+                    case 45:
+                        uncoded[i].new_character = '-';
+                        break;
+                    case 46:
+                        uncoded[i].new_character = '.';
+                        break;
+                    case 47:
+                        uncoded[i].new_character = '/';
+                        break;
+                    case 48:
+                        uncoded[i].new_character = '0';
+                        break;
+                    case 49:
+                        uncoded[i].new_character = '1';
+                        break;
+                    case 50:
+                        uncoded[i].new_character = '2';
+                        break;
+                    case 51:
+                        uncoded[i].new_character = '3';
+                        break;
+                    case 52:
+                        uncoded[i].new_character = '4';
+                        break;
+                    case 53:
+                        uncoded[i].new_character = '5';
+                        break;
+                    case 54:
+                        uncoded[i].new_character = '6';
+                        break;
+                    case 55:
+                        uncoded[i].new_character = '7';
+                        break;
+                    case 56:
+                        uncoded[i].new_character = '8';
+                        break;
+                    case 57:
+                        uncoded[i].new_character = '9';
+                        break;
+                    case 58:
+                        uncoded[i].new_character = ':';
+                        break;
+                    case 59:
+                        uncoded[i].new_character = ';';
+                        break;
+                    case 60:
+                        uncoded[i].new_character = '<';
+                        break;
+                    case 61:
+                        uncoded[i].new_character = '=';
+                        break;
+                    case 62:
+                        uncoded[i].new_character = '>';
+                        break;
+                    case 63:
+                        uncoded[i].new_character = '?';
+                        break;
+                    case 64:
+                        uncoded[i].new_character = '@';
+                        break;
+                    case 65:
+                        uncoded[i].new_character = 'A';
+                        break;
+                    case 66:
+                        uncoded[i].new_character = 'B';
+                        break;
+                    case 67:
+                        uncoded[i].new_character = 'C';
+                        break;
+                    case 68:
+                        uncoded[i].new_character = 'D';
+                        break;
+                    case 69:
+                        uncoded[i].new_character = 'E';
+                        break;
+                    case 70:
+                        uncoded[i].new_character = 'F';
+                        break;
+                    case 71:
+                        uncoded[i].new_character = 'G';
+                        break;
+                    case 72:
+                        uncoded[i].new_character = 'H';
+                        break;
+                    case 73:
+                        uncoded[i].new_character = 'I';
+                        break;
+                    case 74:
+                        uncoded[i].new_character = 'J';
+                        break;
+                    case 75:
+                        uncoded[i].new_character = 'K';
+                        break;
+                    case 76:
+                        uncoded[i].new_character = 'L';
+                        break;
+                    case 77:
+                        uncoded[i].new_character = 'M';
+                        break;
+                    case 78:
+                        uncoded[i].new_character = 'N';
+                        break;
+                    case 79:
+                        uncoded[i].new_character = 'O';
+                        break;
+                    case 80:
+                        uncoded[i].new_character = 'P';
+                        break;
+                    case 81:
+                        uncoded[i].new_character = 'Q';
+                        break;
+                    case 82:
+                        uncoded[i].new_character = 'R';
+                        break;
+                    case 83:
+                        uncoded[i].new_character = 'S';
+                        break;
+                    case 84:
+                        uncoded[i].new_character = 'T';
+                        break;
+                    case 85:
+                        uncoded[i].new_character = 'U';
+                        break;
+                    case 86:
+                        uncoded[i].new_character = 'V';
+                        break;
+                    case 87:
+                        uncoded[i].new_character = 'W';
+                        break;
+                    case 88:
+                        uncoded[i].new_character = 'X';
+                        break;
+                    case 89:
+                        uncoded[i].new_character = 'Y';
+                        break;
+                    case 90:
+                        uncoded[i].new_character = 'Z';
+                        break;
+                    case 97:
+                        uncoded[i].new_character = 'a';
+                        break;
+                    case 98:
+                        uncoded[i].new_character = 'b';
+                        break;
+                    case 99:
+                        uncoded[i].new_character = 'c';
+                        break;
+                    case 100:
+                        uncoded[i].new_character = 'd';
+                        break;
+                    case 101:
+                        uncoded[i].new_character = 'e';
+                        break;
+                    case 102:
+                        uncoded[i].new_character = 'f';
+                        break;
+                    case 103:
+                        uncoded[i].new_character = 'g';
+                        break;
+                    case 104:
+                        uncoded[i].new_character = 'h';
+                        break;
+                    case 105:
+                        uncoded[i].new_character = 'i';
+                        break;
+                    case 106:
+                        uncoded[i].new_character = 'j';
+                        break;
+                    case 107:
+                        uncoded[i].new_character = 'k';
+                        break;
+                    case 108:
+                        uncoded[i].new_character = 'l';
+                        break;
+                    case 109:
+                        uncoded[i].new_character = 'm';
+                        break;
+                    case 110:
+                        uncoded[i].new_character = 'n';
+                        break;
+                    case 111:
+                        uncoded[i].new_character = 'o';
+                        break;
+                    case 112:
+                        uncoded[i].new_character = 'p';
+                        break;
+                    case 113:
+                        uncoded[i].new_character = 'q';
+                        break;
+                    case 114:
+                        uncoded[i].new_character = 'r';
+                        break;
+                    case 115:
+                        uncoded[i].new_character = 's';
+                        break;
+                    case 116:
+                        uncoded[i].new_character = 't';
+                        break;
+                    case 117:
+                        uncoded[i].new_character = 'u';
+                        break;
+                    case 118:
+                        uncoded[i].new_character = 'v';
+                        break;
+                    case 119:
+                        uncoded[i].new_character = 'w';
+                        break;
+                    case 120:
+                        uncoded[i].new_character = 'x';
+                        break;
+                    case 121:
+                        uncoded[i].new_character = 'y';
+                        break;
+                    case 122:
+                        uncoded[i].new_character = 'z';
+                        break;
+                    default:
+                        uncoded[i].new_character = '#';
+                        break;
                 }
             });
             return;

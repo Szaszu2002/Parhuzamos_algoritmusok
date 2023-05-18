@@ -70,13 +70,17 @@ int main()
     clock_t openmpend_time;
     int i;
     int j;
+    struct helper help;
     
+    
+
     start_time=clock();
     struct data uncoded;
     uncoded.character=malloc(sizeof(char)*100000);
     uncoded.new=malloc(sizeof(char)*100000);
+    printf("Before\n");
     Scanfile(&uncoded);
-    //printf("Beolvas");
+    printf("Beolvas");
     pthread_t threads[uncoded.n];
     pthread_t threadsomp[uncoded.n];
 
@@ -101,53 +105,7 @@ int main()
     end_time=clock();
     allsequencialtime=end_time-start_time;
     printf(" end ");
-    //párhuzamos rész !!!
-    
-    pstart_time=clock();
-    struct data puncoded;
-    puncoded.character=malloc(sizeof(char)*100000);
-    puncoded.new=malloc(sizeof(char)*100000);
-    struct data2 pcoded;
-    pcoded.code=malloc(sizeof(int)*100000);
-    pcoded.number=malloc(sizeof(int)*100000);
-    pcoded.n=(puncoded.n);
-    Scanfile(&puncoded);
-    struct helper help;
-    //printf(" 113 ");
-    
-    pencoding_time1=clock();
-    for(i=0;i<puncoded.n;i++)
-    {
-        help.i=i;
-        help.character=puncoded.character[i];
-        
-        pthread_create(&threads[i],NULL,ParEncodingText,&help);
-        pcoded.number[i]=help.number;
-        pcoded.code[i]=help.code;
-    }
-    pencoding_time2=clock();
-    pencoding_time=pencoding_time2-pencoding_time1;
-    //printf(" 128 ");
-    CodedFileDump(&pcoded);
-    //printf(" 130 ");
-    pdecoding_time1=clock();
-    for(i=0;i<pcoded.n;i++)
-    {
-        help.i=i;
-        help.code=pcoded.code[i];
-        
-        pthread_create(&threads[i],NULL,ParDecoding,&help);
-        puncoded.new[i]=help.new;
-    }
-    //printf( " 138 ");
-    pdecoding_time2=clock();
-    pdecoding_time=pdecoding_time2-pdecoding_time1;
-
-    DecodedFileDump(&puncoded);
-    pend_time=clock();
-    palltime=pend_time-pstart_time;
-    printf(" end ");
-    //OPENMP rész !!!
+ //OPENMP rész !!!
 
     openmpstart_time=clock();
     struct data ouncoded;
@@ -157,9 +115,10 @@ int main()
     ocoded.code=malloc(sizeof(int)*100000);
     ocoded.number=malloc(sizeof(int)*100000);
     ocoded.n=(ouncoded.n);
-    Scanfile(&puncoded);
+    Scanfile(&ouncoded);
 
     openmpencoding_time1=clock();
+    printf("%d", ocoded.n);
     #pragma omp parallel
     {
         printf(" 166 ");
@@ -197,6 +156,54 @@ int main()
     openmpend_time=clock();
     openmpalltime=openmpend_time-openmpstart_time;
     printf( "end" );
+
+    //párhuzamos rész !!!
+    
+    pstart_time=clock();
+    struct data puncoded;
+    puncoded.character=malloc(sizeof(char)*100000);
+    puncoded.new=malloc(sizeof(char)*100000);
+    struct data2 pcoded;
+    pcoded.code=malloc(sizeof(int)*100000);
+    pcoded.number=malloc(sizeof(int)*100000);
+    pcoded.n=(puncoded.n);
+    Scanfile(&puncoded);
+    
+    //printf(" 113 ");
+    
+    pencoding_time1=clock();
+    for(i=0;i<puncoded.n;i++)
+    {
+        help.i=i;
+        help.character=puncoded.character[i];
+        
+        pthread_create(&threads[i],NULL,ParEncodingText,&help);
+        pcoded.number[i]=help.number;
+        pcoded.code[i]=help.code;
+    }
+    pencoding_time2=clock();
+    pencoding_time=pencoding_time2-pencoding_time1;
+    //printf(" 128 ");
+    CodedFileDump(&pcoded);
+    //printf(" 130 ");
+    pdecoding_time1=clock();
+    for(i=0;i<pcoded.n;i++)
+    {
+        help.i=i;
+        help.code=pcoded.code[i];
+        
+        pthread_create(&threads[i],NULL,ParDecoding,&help);
+        puncoded.new[i]=help.new;
+    }
+    //printf( " 138 ");
+    pdecoding_time2=clock();
+    pdecoding_time=pdecoding_time2-pdecoding_time1;
+
+    DecodedFileDump(&puncoded);
+    pend_time=clock();
+    palltime=pend_time-pstart_time;
+    printf(" end ");
+   
 
     free(uncoded.character);
     free(uncoded.new);
@@ -237,7 +244,7 @@ void Scanfile(data* uncoded)
     int size=0, number_of_lines=0, i=0;
     char ch;
     FILE *fp;
-
+    printf("1size= %d\n",size);
     fp=fopen("text.txt","r");
     if(fp==NULL)
     {
@@ -250,12 +257,13 @@ void Scanfile(data* uncoded)
             
             //printf("i");
             uncoded->character[i]=ch; 
+            printf("%c",ch);
             //printf("i");
             i++;
             //printf("i");
             size++; 
             //printf("i");
-            
+            printf("2size= %d\n",size);
         }
         if (size==0) 
         {
@@ -263,7 +271,9 @@ void Scanfile(data* uncoded)
             return;
         }
         
+        printf("4size= %d\n",size);
         fclose(fp);
+        printf("5size= %d\n",size);
         uncoded->n=size;
     }
     return;
