@@ -26,13 +26,12 @@ namespace RSA_2
 
         static void Main(string[] args)
         {
-            //algolgoritmus hibádzik!!!
             
-            data[] uncoded = new data[10];
+            data[] uncoded = new data[1];
             data2[] coded = new data2[uncoded.Length];
             Stopwatch fulltime = new Stopwatch();
             fulltime.Start();
-            StreamReader read=new StreamReader("text_quote5.txt");
+            StreamReader read=new StreamReader("text.txt");
             int i=0;
             string line;
             while(!read.EndOfStream)
@@ -66,7 +65,7 @@ namespace RSA_2
             
 
 
-            //Console.ReadLine();
+            Console.ReadLine();
         }
 
         static void EncodingText(data[] uncoded, data2[] coded)
@@ -378,15 +377,16 @@ namespace RSA_2
                 long C=1;
                 
                 C = 1 % n;
-                C = (M * C) % n;    //1
-
+                C = (M * C) % n;    //1 
+                
                 C = (C * C) % n;
-
-                C = (C * C) % n;
+                
+                C = (C * C) % n; 
                 C = (M * C) % n;    //1
-
-                C = (C * C) % n;
+                
+                C = (C * C) % n;    
                 C = (M * C) % n;    //1
+                
                 coded[i].code = (int) C;
             });
             return;
@@ -458,7 +458,7 @@ namespace RSA_2
                     case 33:
                         uncoded[i].new_character = '!';
                         break;
-                    case 35:
+                    case 37:
                         uncoded[i].new_character = '%';
                         break;
                     case 40:
