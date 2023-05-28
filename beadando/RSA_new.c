@@ -38,40 +38,40 @@ void ParDecoding(helper *help);
 void DecodedFileDump(data *uncoded);//dekódolt szöveg kiírása egy fájlba 
 void ODecodedFileDump(data *uncoded);
 void PDecodedFileDump(data *uncoded);
-void runtime_display(unsigned long long allsequencialtime, unsigned long long palltime, unsigned long long openmpalltime, unsigned long long encoding_time, unsigned long long pencoding_time, unsigned long long openmpencoding_time, unsigned long long decoding_time, unsigned long long pdecoding_time, unsigned long long openmpdecoding_time);     //futási idők kiírása egy fájlba
+void runtime_display(double allsequencialtime, double palltime, double openmpalltime, double encoding_time, double pencoding_time, double openmpencoding_time, double decoding_time, double pdecoding_time, double openmpdecoding_time);     //futási idők kiírása egy fájlba
 
 
 
 int main()
 {
-    unsigned long long allsequencialtime;  //
-    unsigned long long palltime; //
-    unsigned long long openmpalltime;
+    double allsequencialtime;  //
+    double palltime; //
+    double openmpalltime;
     struct timeval start_time; //
     struct timeval pstart_time; //
     struct timeval openmpstart_time;
     struct timeval encoding_time1; //
     struct timeval encoding_time2; //
-    unsigned long long encoding_time;  //
+    double encoding_time;  //
     struct timeval pencoding_time1; //
     struct timeval pencoding_time2;
-    unsigned long long pencoding_time;
+    double pencoding_time;
     struct timeval openmpencoding_time1;
     struct timeval openmpencoding_time2;
-    unsigned long long openmpencoding_time;
+    double openmpencoding_time;
     struct timeval decoding_time1; //
     struct timeval decoding_time2; //
-    unsigned long long decoding_time;  //
+    double decoding_time;  //
     struct timeval pdecoding_time1;
     struct timeval pdecoding_time2;
-    unsigned long long pdecoding_time;
+    double pdecoding_time;
     struct timeval openmpdecoding_time1;
     struct timeval openmpdecoding_time2;
-    unsigned long long openmpdecoding_time;
+    double openmpdecoding_time;
     struct timeval end_time;
     struct timeval pend_time;
     struct timeval openmpend_time;
-    unsigned long long read_time;
+    double read_time;
     struct timeval read_time1;
     struct timeval read_time2;
     int i,j;
@@ -82,7 +82,7 @@ int main()
     uncoded.new=malloc(sizeof(char)*100000);
     Scanfile(&uncoded);
     gettimeofday(&read_time2,NULL);
-    read_time=(read_time2.tv_sec/1000+read_time2.tv_usec)-(read_time1.tv_sec/1000+read_time1.tv_usec);
+    read_time=(read_time2.tv_sec*1000+read_time2.tv_usec/(double)100)-(read_time1.tv_sec*1000+read_time1.tv_usec/(double)100);
     
     struct helper help[uncoded.n];
     pthread_t threads[uncoded.n];
@@ -95,17 +95,17 @@ int main()
     coded.number=malloc(sizeof(int)*100000);
     EncodingText(&uncoded,&coded);
     gettimeofday(&encoding_time2,NULL);
-    encoding_time=(encoding_time2.tv_sec/1000+encoding_time2.tv_usec)-(encoding_time1.tv_sec/1000+encoding_time1.tv_usec);
+    encoding_time=(encoding_time2.tv_sec*1000+encoding_time2.tv_usec/(double)100)-(encoding_time1.tv_sec*1000+encoding_time1.tv_usec/(double)100);
 
     CodedFileDump(&coded);
     
     gettimeofday(&decoding_time1,NULL);
     Decoding(&coded,&uncoded);
     gettimeofday(&decoding_time2,NULL);
-    decoding_time=(decoding_time2.tv_sec/1000+decoding_time2.tv_usec)-(decoding_time1.tv_sec/1000+decoding_time1.tv_usec);
+    decoding_time=(decoding_time2.tv_sec*1000+decoding_time2.tv_usec/(double)100)-(decoding_time1.tv_sec*1000+decoding_time1.tv_usec/(double)100);
     DecodedFileDump(&uncoded);
     gettimeofday(&end_time,NULL);
-    allsequencialtime=((end_time.tv_sec/1000+end_time.tv_usec)-(start_time.tv_sec/1000+start_time.tv_usec)+read_time);
+    allsequencialtime=((end_time.tv_sec*1000+end_time.tv_usec/(double)100)-(start_time.tv_sec*1000+start_time.tv_usec/(double)100)+read_time);
   
     //párhuzamos rész !!!
     gettimeofday(&pstart_time,NULL);
@@ -122,7 +122,7 @@ int main()
         pthread_join(threads[i],NULL);
     }
     gettimeofday(&pencoding_time2,NULL);
-    pencoding_time=(pencoding_time2.tv_sec/1000+pencoding_time2.tv_usec)-(pencoding_time1.tv_sec/1000+pencoding_time1.tv_usec);
+    pencoding_time=(pencoding_time2.tv_sec*1000+pencoding_time2.tv_usec/(double)100)-(pencoding_time1.tv_sec*1000+pencoding_time1.tv_usec/(double)100);
     PCodedFileDump(&coded);
     gettimeofday(&pdecoding_time1,NULL);
     for(i=0;i<coded.n;i++)
@@ -135,10 +135,10 @@ int main()
         pthread_join(threads[i],NULL);
     }
     gettimeofday(&pdecoding_time2,NULL);
-    pdecoding_time=(pdecoding_time2.tv_sec/1000+pdecoding_time2.tv_usec)-(pdecoding_time1.tv_sec/1000+pdecoding_time1.tv_usec);
+    pdecoding_time=(pdecoding_time2.tv_sec*1000+pdecoding_time2.tv_usec/(double)100)-(pdecoding_time1.tv_sec*1000+pdecoding_time1.tv_usec/(double)100);
     PDecodedFileDump(&uncoded);
     gettimeofday(&pend_time,NULL);
-    palltime=((pend_time.tv_sec/1000+pend_time.tv_usec)-(pstart_time.tv_sec/1000+pstart_time.tv_usec)+read_time);
+    palltime=((pend_time.tv_sec*1000+pend_time.tv_usec/(double)100)-(pstart_time.tv_sec*1000+pstart_time.tv_usec/(double)100)+read_time);
 
     //OPENMP rész !!!
     gettimeofday(&openmpstart_time,NULL);
@@ -151,7 +151,7 @@ int main()
         ParEncodingText(&help[j]);
     }
     gettimeofday(&openmpencoding_time2,NULL);
-    openmpencoding_time=(openmpencoding_time2.tv_sec/1000+openmpencoding_time2.tv_usec)-(openmpencoding_time1.tv_sec/1000+openmpencoding_time1.tv_usec);
+    openmpencoding_time=(openmpencoding_time2.tv_sec*1000+openmpencoding_time2.tv_usec/(double)100)-(openmpencoding_time1.tv_sec*1000+openmpencoding_time1.tv_usec/(double)100);
     OCodedFileDump(&coded);
     gettimeofday(&openmpdecoding_time1,NULL);
     
@@ -162,11 +162,11 @@ int main()
         ParDecoding(&help[j]);
     }
     gettimeofday(&openmpdecoding_time2,NULL);
-    openmpdecoding_time=(openmpdecoding_time2.tv_sec/1000+openmpdecoding_time2.tv_usec)-(openmpdecoding_time1.tv_sec/1000+openmpdecoding_time1.tv_usec);
+    openmpdecoding_time=(openmpdecoding_time2.tv_sec*1000+openmpdecoding_time2.tv_usec/(double)100)-(openmpdecoding_time1.tv_sec*1000+openmpdecoding_time1.tv_usec/(double)100);
     
     ODecodedFileDump(&uncoded);
     gettimeofday(&openmpend_time,NULL);
-    openmpalltime=((openmpend_time.tv_sec/1000+openmpend_time.tv_usec)-(openmpstart_time.tv_sec/1000+openmpstart_time.tv_usec)+read_time);
+    openmpalltime=((openmpend_time.tv_sec*1000+openmpend_time.tv_usec/(double)100)-(openmpstart_time.tv_sec*1000+openmpstart_time.tv_usec/(double)100)+read_time);
 
     free(uncoded.character);
     free(uncoded.new);
@@ -177,7 +177,7 @@ int main()
     return 0;
 }
 
-void runtime_display(unsigned long long allsequencialtime, unsigned long long palltime, unsigned long long openmpalltime, unsigned long long encoding_time, unsigned long long pencoding_time, unsigned long long openmpencoding_time, unsigned long long decoding_time, unsigned long long pdecoding_time, unsigned long long openmpdecoding_time)
+void runtime_display(double allsequencialtime, double palltime, double openmpalltime, double encoding_time, double pencoding_time, double openmpencoding_time, double decoding_time, double pdecoding_time, double openmpdecoding_time)
 {
     FILE *fp;
    
@@ -188,7 +188,7 @@ void runtime_display(unsigned long long allsequencialtime, unsigned long long pa
     }
     else
     {
-        fprintf(fp,"\n %.lld; %.lld; %.lld; %.lld; %.lld; %.lld; %.lld; %.lld; %.lld", allsequencialtime, palltime, openmpalltime, encoding_time, pencoding_time, openmpencoding_time, decoding_time, pdecoding_time, openmpdecoding_time);
+        fprintf(fp,"\n %.4lf; %.4lf; %.4lf; %.4lf; %.4lf; %.4lf; %.4lf; %.4lf; %.4lf", allsequencialtime, palltime, openmpalltime, encoding_time, pencoding_time, openmpencoding_time, decoding_time, pdecoding_time, openmpdecoding_time);
         fclose(fp);
     }
     return;
