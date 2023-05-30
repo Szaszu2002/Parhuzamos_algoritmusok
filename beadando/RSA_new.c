@@ -200,7 +200,7 @@ void Scanfile(data* uncoded)
     char ch;
     FILE *fp;
     
-    fp=fopen("text_short_story.txt","r");
+    fp=fopen("text_Abrand.txt","r");
     if(fp==NULL)
     {
         printf("\nSikertelen fájl megnyitás");
